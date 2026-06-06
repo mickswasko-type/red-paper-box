@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Daily Front Pages — A Personal News Archive (2008–2016)</title>
+<meta name="description" content="A personal, non-commercial preservation archive of daily newspaper front pages, 2008–2016.">
+<meta name="robots" content="noindex, nofollow">
+<meta property="og:title" content="Daily Front Pages — A Personal News Archive (2008–2016)">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Fraunces:ital,opsz,wght@0,9..144,500;1,9..144,400&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#f3efe5;
+    --ink:#1c1a17;
+    --red:#e22319;
+    --aged:#6b6457;
+    --rule:#d8d2c4;
+    --card:#fbf9f3;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'Newsreader',Georgia,serif;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+    background-image:
+      radial-gradient(circle at 50% 0,rgba(0,0,0,0.02),transparent 60%),
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)' opacity='0.025'/%3E%3C/svg%3E");
+  }
+
+  /* ---------- Masthead ---------- */
+  header{
+    max-width:1280px;margin:0 auto;padding:3.6rem 2rem 1.6rem;
+  }
+  .kicker{
+    font-family:'DM Mono',monospace;font-size:0.7rem;letter-spacing:0.42em;
+    text-transform:uppercase;color:var(--red);margin-bottom:1.1rem;
+    display:flex;align-items:center;gap:0.8rem;
+  }
+  .kicker::before{content:"";width:34px;height:10px;background:var(--red);display:inline-block;}
+  h1{
+    font-family:'Anton',sans-serif;font-weight:400;
+    font-size:clamp(2.6rem,7vw,5.6rem);line-height:0.9;
+    letter-spacing:-0.01em;text-transform:uppercase;margin-bottom:1.2rem;
+  }
+  h1 .rainbow{
+    background:linear-gradient(90deg,#e22319 0%,#f07a13 18%,#f5c518 36%,#3aa651 56%,#2b6fd4 76%,#7a3a9e 100%);
+    -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
+  }
+  .standfirst{
+    font-size:clamp(1.02rem,1.5vw,1.28rem);max-width:48rem;color:#332f29;
+    border-left:3px solid var(--red);padding-left:1.4rem;
+  }
+  .standfirst em{font-style:italic;color:var(--aged);}
+  .meta-row{
+    margin-top:1.8rem;display:flex;flex-wrap:wrap;gap:1rem 2.6rem;
+    font-family:'DM Mono',monospace;font-size:0.72rem;letter-spacing:0.08em;
+    text-transform:uppercase;color:var(--aged);
+    border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);
+    padding:1rem 0;
+  }
+  .meta-row strong{color:var(--ink);font-weight:500;}
+
+  /* ---------- Controls ---------- */
+  .controls{
+    position:sticky;top:0;z-index:50;background:var(--paper);
+    border-bottom:1px solid var(--rule);
+    box-shadow:0 6px 20px -18px rgba(0,0,0,0.5);
+  }
+  .controls-inner{
+    max-width:1280px;margin:0 auto;padding:0.9rem 2rem;
+    display:flex;flex-wrap:wrap;align-items:center;gap:0.7rem 0.9rem;
+  }
+  .search-wrap{position:relative;flex:1 1 320px;min-width:240px;}
+  .search-wrap svg{
+    position:absolute;left:0.85rem;top:50%;transform:translateY(-50%);
+    width:16px;height:16px;stroke:var(--aged);fill:none;stroke-width:2;
+  }
+  #q{
+    width:100%;font-family:'Newsreader',serif;font-size:1rem;
+    padding:0.65rem 0.9rem 0.65rem 2.5rem;
+    background:var(--card);border:1px solid var(--rule);color:var(--ink);
+    border-radius:2px;outline:none;transition:border-color .15s;
+  }
+  #q:focus{border-color:var(--red);}
+  #q::placeholder{color:#a59f90;}
+  select{
+    font-family:'DM Mono',monospace;font-size:0.72rem;letter-spacing:0.06em;
+    text-transform:uppercase;color:var(--ink);
+    padding:0.6rem 0.7rem;background:var(--card);
+    border:1px solid var(--rule);border-radius:2px;cursor:pointer;outline:none;
+  }
+  select:focus{border-color:var(--red);}
+  .chip-btn{
+    font-family:'DM Mono',monospace;font-size:0.68rem;letter-spacing:0.08em;
+    text-transform:uppercase;padding:0.6rem 0.85rem;cursor:pointer;
+    background:var(--card);border:1px solid var(--rule);color:var(--ink);
+    border-radius:2px;transition:all .15s;
+  }
+  .chip-btn:hover{border-color:var(--red);color:var(--red);}
+  .chip-btn.active{background:var(--red);border-color:var(--red);color:#fff;}
+  .chip-btn.ghost{color:var(--aged);}
+
+  /* ---------- Result meta ---------- */
+  .resultbar{
+    max-width:1280px;margin:0 auto;padding:1.4rem 2rem 0.4rem;
+    display:flex;align-items:baseline;gap:1rem;flex-wrap:wrap;
+  }
+  .resultbar .count{font-family:'Anton',sans-serif;font-size:1.6rem;color:var(--ink);}
+  .resultbar .count .num{color:var(--red);}
+  .resultbar .sub{
+    font-family:'DM Mono',monospace;font-size:0.7rem;letter-spacing:0.1em;
+    text-transform:uppercase;color:var(--aged);
+  }
+
+  /* ---------- Grid ---------- */
+  main{max-width:1280px;margin:0 auto;padding:1.2rem 2rem 3rem;}
+  .grid{
+    display:grid;gap:1.5rem;
+    grid-template-columns:repeat(auto-fill,minmax(240px,1fr));
+  }
+  .card{
+    background:var(--card);border:1px solid var(--rule);
+    display:flex;flex-direction:column;text-decoration:none;color:inherit;
+    overflow:hidden;
+    transition:transform .18s ease,box-shadow .18s ease,border-color .18s ease;
+    box-shadow:0 1px 0 rgba(0,0,0,0.02);
+  }
+  .card:hover{transform:translateY(-3px);box-shadow:0 14px 30px -14px rgba(0,0,0,0.4);border-color:var(--red);}
+  .card.major{border-top:4px solid var(--red);}
+  .card.nolink{cursor:default;}
+  .card.nolink:hover{transform:none;box-shadow:0 1px 0 rgba(0,0,0,0.02);border-color:var(--rule);}
+
+  /* ---------- Featured collection bar ---------- */
+  .collbar{max-width:1280px;margin:0 auto;padding:1.4rem 2rem 0;}
+  .collbar a{
+    display:flex;align-items:center;gap:1rem;text-decoration:none;color:inherit;
+    border:1px solid var(--rule);background:var(--card);padding:0.85rem 1.1rem;
+    border-left:4px solid transparent;
+    border-image:linear-gradient(180deg,#e22319,#f07a13,#f5c518,#3aa651,#2b6fd4,#7a3a9e) 1;
+    transition:box-shadow .18s ease,transform .18s ease;
+  }
+  .collbar a:hover{transform:translateY(-2px);box-shadow:0 12px 26px -16px rgba(0,0,0,0.4);}
+  .collbar .ck{font-family:'DM Mono',monospace;font-size:0.6rem;letter-spacing:0.22em;text-transform:uppercase;color:var(--red);}
+  .collbar .ct{font-family:'Anton',sans-serif;font-size:1.1rem;text-transform:uppercase;letter-spacing:0.01em;}
+  .collbar .cd{font-family:'Newsreader',serif;font-size:0.86rem;color:#4a463e;flex:1;min-width:0;}
+  .collbar .cgo{font-family:'DM Mono',monospace;font-size:0.62rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--aged);white-space:nowrap;}
+  @media(max-width:640px){.collbar .cd{display:none;}}
+
+  .thumb{
+    width:100%;height:340px;background:#e7e2d6;
+    overflow:hidden;position:relative;border-bottom:1px solid var(--rule);
+    display:flex;align-items:center;justify-content:center;
+  }
+  .thumb img{width:100%;height:100%;object-fit:contain;display:block;background:#e7e2d6;}
+  .thumb .fallback{
+    position:absolute;inset:0;display:none;align-items:center;justify-content:center;
+    font-family:'Anton',sans-serif;color:var(--red);font-size:1.5rem;text-align:center;
+    flex-direction:column;gap:2px;letter-spacing:0.04em;line-height:0.95;
+  }
+  .thumb .fallback small{
+    font-family:'DM Mono',monospace;font-size:0.5rem;letter-spacing:0.18em;
+    color:var(--aged);margin-top:8px;
+  }
+  .badge{
+    position:absolute;top:8px;left:8px;z-index:2;
+    font-family:'DM Mono',monospace;font-size:0.5rem;letter-spacing:0.1em;
+    text-transform:uppercase;background:rgba(28,26,23,0.82);color:#f3efe5;
+    padding:3px 6px;border-radius:2px;
+  }
+  .body{padding:0.85rem 0.95rem 1rem;}
+  .date{
+    font-family:'Fraunces',Georgia,serif;font-size:0.8rem;font-weight:500;
+    letter-spacing:0.13em;text-transform:uppercase;color:var(--red);
+  }
+  .open{
+    margin-top:0.45rem;font-family:'DM Mono',monospace;font-size:0.55rem;
+    letter-spacing:0.12em;text-transform:uppercase;color:var(--aged);
+    display:flex;align-items:center;gap:5px;
+  }
+
+  .sentinel{height:40px;}
+  .empty{
+    text-align:center;padding:5rem 1rem;color:var(--aged);
+    font-style:italic;font-size:1.1rem;
+  }
+  .loading-note{
+    text-align:center;padding:1.2rem;color:var(--aged);
+    font-family:'DM Mono',monospace;font-size:0.66rem;letter-spacing:0.1em;
+    text-transform:uppercase;
+  }
+
+  /* ---------- Footer ---------- */
+  footer{
+    max-width:1280px;margin:0 auto;padding:2.5rem 2rem 5rem;border-top:2px solid var(--ink);
+  }
+  footer .fkick{font-family:'DM Mono',monospace;font-size:0.68rem;letter-spacing:0.3em;text-transform:uppercase;color:var(--red);margin-bottom:1rem;}
+  footer p{font-size:0.95rem;color:#3a352e;max-width:46rem;margin-bottom:0.9rem;}
+  footer .count{font-family:'Anton',sans-serif;font-size:1.4rem;color:var(--ink);}
+  footer .fine{font-family:'DM Mono',monospace;font-size:0.66rem;letter-spacing:0.08em;color:var(--aged);text-transform:uppercase;}
+  footer .disclaimer{margin-top:1.6rem;padding-top:1.2rem;border-top:1px solid var(--rule);font-size:0.8rem;font-style:italic;color:var(--aged);max-width:46rem;}
+
+  @media(max-width:560px){
+    .grid{grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:1rem;}
+    .thumb{height:240px;}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="kicker">A RedEye Archive Project · Searchable Edition</div>
+  <h1>The <span class="rainbow">RedEye</span> Archive</h1>
+  <p class="standfirst">Every surviving front page of RedEye Chicago — the free daily that ran from <em>2008 to 2016</em> — saved, dated, and searchable. Type a name, a team, a word. Browse a decade of the city's mornings. Tap any cover to open the full issue.</p>
+  <div class="meta-row">
+    <div><strong id="m-count">—</strong> · Issues archived</div>
+    <div><strong id="m-span">—</strong> · Span</div>
+    <div><strong>Tap any cover</strong> · opens the full PDF</div>
+    <div><strong>Source</strong> · Internet Archive → Google Drive</div>
+  </div>
+</header>
+
+<div class="controls">
+  <div class="controls-inner">
+    <label class="search-wrap">
+      <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.5" y2="16.5"/></svg>
+      <input id="q" type="search" placeholder="Search front pages — Bears, Pride, Rahm, a name…" autocomplete="off">
+    </label>
+    <select id="year" title="Year"></select>
+    <select id="month" title="Month"></select>
+    <select id="weekday" title="Day of week"></select>
+    <select id="sort" title="Sort order">
+      <option value="desc">Newest first</option>
+      <option value="asc">Oldest first</option>
+    </select>
+    <button class="chip-btn" id="otd" title="Issues from today's date across all years">On this day</button>
+    <button class="chip-btn ghost" id="reset">Reset</button>
+  </div>
+</div>
+
+<div class="collbar" id="collbar"></div>
+
+<div class="resultbar">
+  <div class="count"><span class="num" id="rnum">0</span> issues</div>
+  <div class="sub" id="rsub"></div>
+</div>
+
+<main>
+  <div class="grid" id="grid"></div>
+  <div class="sentinel" id="sentinel"></div>
+  <div class="loading-note" id="more"></div>
+  <div class="empty" id="empty" style="display:none">No issues match your search.</div>
+</main>
+
+<footer>
+  <div class="fkick">— 30 —</div>
+  <p class="count">A decade. One front page at a time.</p>
+  <p>This archive holds roughly <strong id="f-count">—</strong> complete editions of RedEye Chicago, parsed by date and matched cover-to-issue, saved before they could disappear. Pick a topic — the Cubs drought, the CTA, a Chicago summer — and the archive remembers.</p>
+  <p class="fine" id="f-recon">—</p>
+  <p class="disclaimer">A personal, non-commercial preservation project. Not affiliated with, endorsed by, or sponsored by Tribune Publishing. Issues were sourced from the public Internet Archive. If you hold rights to this material and have concerns, please get in touch.</p>
+</footer>
+
+<script src="redeye-data.js"></script>
+<script>
+(function(){
+  const DATA = (window.REDEYE_DATA && window.REDEYE_DATA.records) || [];
+  const MONTHS = ["January","February","March","April","May","June","July",
+    "August","September","October","November","December"];
+  const WD = ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"];
+  const CHUNK = 60;
+
+  const $ = id => document.getElementById(id);
+  const grid = $('grid'), sentinel = $('sentinel'), moreEl = $('more'), emptyEl = $('empty');
+
+  // ---- populate filter dropdowns ----
+  const years = [...new Set(DATA.map(r=>r.year))].sort();
+  $('year').innerHTML = '<option value="">All years</option>' +
+    years.map(y=>`<option value="${y}">${y}</option>`).join('');
+  $('month').innerHTML = '<option value="">All months</option>' +
+    MONTHS.map((m,i)=>`<option value="${i+1}">${m}</option>`).join('');
+  $('weekday').innerHTML = '<option value="">Any day</option>' +
+    WD.map((d,i)=>`<option value="${i}">${d}</option>`).join('');
+
+  // ---- masthead / footer stats ----
+  if (DATA.length){
+    const span = DATA.reduce((a,r)=>{a.min=r.date<a.min?r.date:a.min;a.max=r.date>a.max?r.date:a.max;return a;},
+                             {min:DATA[0].date,max:DATA[0].date});
+    const fmt = iso=>{const[y,m,d]=iso.split('-');return MONTHS[+m-1].slice(0,3)+' '+y;};
+    $('m-count').textContent = DATA.length.toLocaleString();
+    $('f-count').textContent = DATA.length.toLocaleString();
+    $('m-span').textContent = fmt(span.min)+' — '+fmt(span.max);
+    const withPdf = DATA.filter(r=>r.pdfFileId).length;
+    const coverOnly = DATA.filter(r=>r.coverOnly).length;
+    $('f-recon').textContent = `${withPdf.toLocaleString()} full issues · ${coverOnly} cover-only · matched by date`;
+  }
+
+  // ---- featured collections (set by the Pages build) ----
+  const collections = (window.REDEYE_DATA && window.REDEYE_DATA.collections) || [];
+  if (collections.length){
+    $('collbar').innerHTML = collections.map(c=>`
+      <a href="${c.href}" rel="noopener">
+        <span style="display:flex;flex-direction:column;gap:2px">
+          <span class="ck">${c.kicker || 'Featured collection'}</span>
+          <span class="ct">${c.title}</span>
+        </span>
+        <span class="cd">${c.desc || ''}</span>
+        <span class="cgo">Open ▸</span>
+      </a>`).join('');
+  }
+
+  // ---- state ----
+  const state = {q:'', year:'', month:'', weekday:'', sort:'desc', otd:false};
+  let filtered = [], rendered = 0;
+
+  function applyFilters(){
+    const terms = state.q.toLowerCase().split(/\s+/).filter(Boolean);
+    const today = new Date();
+    const tM = today.getMonth()+1, tD = today.getDate();
+    filtered = DATA.filter(r=>{
+      if(state.year && r.year !== +state.year) return false;
+      if(state.month && r.month !== +state.month) return false;
+      if(state.weekday!=='' && r.weekday !== +state.weekday) return false;
+      if(state.otd){ const d=+r.date.slice(8,10); if(r.month!==tM || d!==tD) return false; }
+      if(terms.length){
+        const hay = r.searchText.toLowerCase();
+        for(const t of terms) if(!hay.includes(t)) return false;
+      }
+      return true;
+    });
+    filtered.sort((a,b)=> state.sort==='asc' ? a.date.localeCompare(b.date) : b.date.localeCompare(a.date));
+    grid.innerHTML=''; rendered=0;
+    $('rnum').textContent = filtered.length.toLocaleString();
+    $('rsub').textContent = describeFilters();
+    emptyEl.style.display = filtered.length ? 'none':'block';
+    renderMore();
+  }
+
+  function describeFilters(){
+    const bits=[];
+    if(state.q) bits.push('“'+state.q+'”');
+    if(state.year) bits.push(state.year);
+    if(state.month) bits.push(MONTHS[+state.month-1]);
+    if(state.weekday!=='') bits.push(WD[+state.weekday]+'s');
+    if(state.otd) bits.push('on this day');
+    return bits.length ? '· '+bits.join(' · ') : '· entire archive';
+  }
+
+  // ---- lazy image loading ----
+  const imgObserver = new IntersectionObserver((entries)=>{
+    for(const e of entries){
+      if(e.isIntersecting){
+        const img=e.target;
+        img.src=img.dataset.src;
+        imgObserver.unobserve(img);
+      }
+    }
+  },{rootMargin:'600px 0px'});
+
+  // Thumb-drive builds: the packaging script sets these flags and lays media out as
+  // covers/<date>.jpg and issues/<date>.pdf.
+  //   fully offline -> localCovers + localIssues
+  //   hybrid        -> localCovers only (issues stream from Drive)
+  //   default       -> neither (everything from Drive)
+  const D = window.REDEYE_DATA || {};
+  const LOCAL_COVERS = !!(D.localCovers || D.local);
+  const LOCAL_ISSUES = !!(D.localIssues || D.local);
+
+  // Does a local cover image exist for this record? The Pages/offline build bakes
+  // an explicit r.cover flag (from the staged files); older bundles fall back to
+  // coverFileId presence.
+  function hasCover(r){ return r.cover !== undefined ? !!r.cover : !!r.coverFileId; }
+
+  function thumbSrc(r){
+    if(LOCAL_COVERS) return hasCover(r) ? `covers/${r.date}.jpg` : '';  // '' -> fallback tile
+    const id = r.coverFileId || r.pdfFileId;
+    return id ? `https://drive.google.com/thumbnail?id=${id}&sz=w400` : '';
+  }
+  // What a card click opens — never a dead link. {href:null} renders a non-clickable card.
+  function openTarget(r){
+    if(r.pdfFileId)
+      return {href: LOCAL_ISSUES ? `issues/${r.date}.pdf`
+                                 : `https://drive.google.com/file/d/${r.pdfFileId}/view`,
+              label:'Open full issue'};
+    if(LOCAL_COVERS && hasCover(r)) return {href:`covers/${r.date}.jpg`, label:'View cover'};
+    if(r.coverFileId) return {href:`https://drive.google.com/file/d/${r.coverFileId}/view`, label:'View cover'};
+    return {href:null, label:'Full issue not yet archived'};
+  }
+
+  function cardHTML(r){
+    const src = thumbSrc(r);
+    const tgt = openTarget(r);
+    const badge = !r.pdfFileId ? '<div class="badge">Cover only — full issue not yet archived</div>' : '';
+    const el = document.createElement(tgt.href ? 'a' : 'div');
+    el.className = 'card' + (tgt.href ? '' : ' nolink');
+    if(tgt.href){ el.href=tgt.href; el.target='_blank'; el.rel='noopener'; }
+    const imgTag = src
+      ? `<img alt="Front page — ${r.disp}" loading="lazy" data-src="${src}"
+             onerror="this.style.display='none';this.parentNode.querySelector('.fallback').style.display='flex';">`
+      : '';  // no local cover -> show fallback tile directly
+    el.innerHTML=`
+      <div class="thumb">
+        ${badge}
+        ${imgTag}
+        <div class="fallback" style="${src?'':'display:flex;'}"><span>RED<br>EYE</span><small>${r.disp}</small></div>
+      </div>
+      <div class="body">
+        <div class="date">${r.disp}</div>
+        <div class="open">▸ ${tgt.label}</div>
+      </div>`;
+    el.querySelector('img') && imgObserver.observe(el.querySelector('img'));
+    return el;
+  }
+
+  function renderMore(){
+    const next = filtered.slice(rendered, rendered+CHUNK);
+    const frag=document.createDocumentFragment();
+    next.forEach(r=>frag.appendChild(cardHTML(r)));
+    grid.appendChild(frag);
+    rendered += next.length;
+    moreEl.textContent = rendered<filtered.length
+      ? `Showing ${rendered.toLocaleString()} of ${filtered.length.toLocaleString()} — scroll for more`
+      : (filtered.length ? `All ${filtered.length.toLocaleString()} shown` : '');
+  }
+
+  // infinite scroll
+  new IntersectionObserver((entries)=>{
+    if(entries[0].isIntersecting && rendered<filtered.length) renderMore();
+  },{rootMargin:'400px 0px'}).observe(sentinel);
+
+  // ---- wire controls ----
+  let t;
+  $('q').addEventListener('input',e=>{state.q=e.target.value;clearTimeout(t);t=setTimeout(applyFilters,140);});
+  $('year').addEventListener('change',e=>{state.year=e.target.value;applyFilters();});
+  $('month').addEventListener('change',e=>{state.month=e.target.value;applyFilters();});
+  $('weekday').addEventListener('change',e=>{state.weekday=e.target.value;applyFilters();});
+  $('sort').addEventListener('change',e=>{state.sort=e.target.value;applyFilters();});
+  $('otd').addEventListener('click',e=>{
+    state.otd=!state.otd; e.target.classList.toggle('active',state.otd); applyFilters();
+  });
+  $('reset').addEventListener('click',()=>{
+    Object.assign(state,{q:'',year:'',month:'',weekday:'',sort:'desc',otd:false});
+    $('q').value='';$('year').value='';$('month').value='';$('weekday').value='';$('sort').value='desc';
+    $('otd').classList.remove('active');
+    applyFilters();
+  });
+
+  applyFilters();
+})();
+</script>
+</body>
+</html>

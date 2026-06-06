@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>A Front-Page Thread — Personal News Archive</title>
+<meta name="robots" content="noindex, nofollow">
+<meta name="description" content="A personal, non-commercial preservation archive of daily newspaper front pages.">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Fraunces:ital,opsz,wght@0,9..144,500;1,9..144,400&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#f3efe5;
+    --ink:#1c1a17;
+    --red:#e22319;
+    --aged:#6b6457;
+    --rule:#d8d2c4;
+    --card:#fbf9f3;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'Newsreader',Georgia,serif;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+    background-image:
+      radial-gradient(circle at 50% 0,rgba(0,0,0,0.02),transparent 60%),
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)' opacity='0.025'/%3E%3C/svg%3E");
+  }
+
+  /* ---------- Masthead ---------- */
+  header{
+    max-width:1180px;margin:0 auto;padding:4.5rem 2rem 2.5rem;
+  }
+  .kicker{
+    font-family:'DM Mono',monospace;font-size:0.7rem;letter-spacing:0.42em;
+    text-transform:uppercase;color:var(--red);margin-bottom:1.4rem;
+    display:flex;align-items:center;gap:0.8rem;
+  }
+  .kicker::before{content:"";width:34px;height:10px;background:var(--red);display:inline-block;}
+  h1{
+    font-family:'Anton',sans-serif;font-weight:400;
+    font-size:clamp(2.8rem,7.5vw,6.4rem);line-height:0.92;
+    letter-spacing:-0.01em;text-transform:uppercase;margin-bottom:1.6rem;
+  }
+  h1 .rainbow{
+    background:linear-gradient(90deg,#e22319 0%,#f07a13 18%,#f5c518 36%,#3aa651 56%,#2b6fd4 76%,#7a3a9e 100%);
+    -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
+  }
+  .standfirst{
+    font-size:clamp(1.05rem,1.6vw,1.35rem);max-width:46rem;color:#332f29;
+    border-left:3px solid var(--red);padding-left:1.4rem;
+  }
+  .standfirst em{font-style:italic;color:var(--aged);}
+  .meta-row{
+    margin-top:2.2rem;display:flex;flex-wrap:wrap;gap:1.6rem 2.6rem;
+    font-family:'DM Mono',monospace;font-size:0.72rem;letter-spacing:0.08em;
+    text-transform:uppercase;color:var(--aged);
+    border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);
+    padding:1.1rem 0;
+  }
+  .meta-row strong{color:var(--ink);font-weight:500;}
+
+  /* ---------- Timeline ---------- */
+  main{max-width:1180px;margin:0 auto;padding:3rem 2rem 2rem;position:relative;}
+  .spine{
+    position:absolute;left:calc(2rem + 7px);top:3rem;bottom:6rem;width:2px;
+    background:linear-gradient(180deg,#e22319,#f07a13,#f5c518,#3aa651,#2b6fd4,#7a3a9e);
+    opacity:0.55;
+  }
+  @media(min-width:760px){
+    .spine{left:calc(50% - 1px);}
+  }
+
+  .year{
+    position:relative;display:flex;align-items:center;gap:1rem;
+    margin:3.4rem 0 1.6rem;padding-left:2.6rem;
+  }
+  @media(min-width:760px){
+    .year{justify-content:center;padding-left:0;}
+  }
+  .year span{
+    font-family:'Anton',sans-serif;font-size:2rem;letter-spacing:0.02em;
+    background:var(--paper);padding:0 1rem;color:var(--ink);position:relative;z-index:2;
+  }
+  .year .dot{
+    position:absolute;left:0;width:16px;height:16px;border-radius:50%;
+    background:var(--red);border:3px solid var(--paper);z-index:2;
+  }
+  @media(min-width:760px){.year .dot{left:calc(50% - 8px);}}
+
+  .entry{
+    position:relative;padding-left:2.6rem;margin-bottom:1.8rem;
+  }
+  @media(min-width:760px){
+    .entry{width:50%;padding-left:0;}
+    .entry.left{margin-right:auto;padding-right:3rem;}
+    .entry.right{margin-left:auto;padding-left:3rem;}
+  }
+
+  .card{
+    background:var(--card);border:1px solid var(--rule);
+    display:flex;flex-direction:column;text-decoration:none;color:inherit;
+    max-width:340px;overflow:hidden;
+    transition:transform .18s ease,box-shadow .18s ease,border-color .18s ease;
+    box-shadow:0 1px 0 rgba(0,0,0,0.02);
+  }
+  @media(min-width:760px){
+    .entry.left .card{margin-left:auto;}
+    .entry.right .card{margin-right:auto;}
+  }
+  .card:hover{transform:translateY(-3px);box-shadow:0 14px 30px -14px rgba(0,0,0,0.4);border-color:var(--red);}
+  .entry.major .card{border-top:4px solid var(--red);}
+
+  .thumb{
+    width:100%;height:360px;background:#e7e2d6;
+    overflow:hidden;position:relative;border-bottom:1px solid var(--rule);
+    display:flex;align-items:center;justify-content:center;
+  }
+  .thumb img{width:100%;height:100%;object-fit:contain;display:block;}
+  .thumb .fallback{
+    position:absolute;inset:0;display:none;align-items:center;justify-content:center;
+    font-family:'Anton',sans-serif;color:var(--red);font-size:1.4rem;text-align:center;
+    flex-direction:column;gap:4px;padding:6px;
+  }
+  .body{flex:1;min-width:0;display:flex;flex-direction:column;justify-content:flex-start;padding:1rem 1.1rem 1.2rem;}
+  .date{
+    font-family:'Fraunces',Georgia,serif;font-size:0.78rem;font-weight:500;
+    letter-spacing:0.13em;text-transform:uppercase;color:var(--red);margin-bottom:0.45rem;
+  }
+  .head{
+    font-family:'Anton',sans-serif;font-size:1.18rem;line-height:1.06;
+    text-transform:uppercase;letter-spacing:0.005em;margin-bottom:0.45rem;
+  }
+  .entry:not(.major) .head{font-size:0.98rem;}
+  .desc{font-size:0.85rem;color:#4a463e;line-height:1.4;}
+  .tag{
+    display:inline-block;margin-top:0.5rem;font-family:'DM Mono',monospace;
+    font-size:0.55rem;letter-spacing:0.12em;text-transform:uppercase;
+    color:var(--aged);
+  }
+  .note{
+    font-style:italic;font-size:0.82rem;color:var(--aged);margin-top:0.5rem;
+    padding-top:0.5rem;border-top:1px dotted var(--rule);
+  }
+
+  /* ---------- Pull moments ---------- */
+  .moment{
+    position:relative;z-index:2;text-align:center;max-width:38rem;margin:3rem auto;
+    padding:1.6rem;background:var(--paper);
+  }
+  .moment p{font-size:1.25rem;font-style:italic;color:#2a2620;line-height:1.5;}
+  .moment.win p{color:var(--red);font-size:1.5rem;font-style:normal;font-family:'Anton',sans-serif;text-transform:uppercase;letter-spacing:0.01em;}
+
+  /* ---------- Footer ---------- */
+  footer{
+    max-width:1180px;margin:0 auto;padding:3rem 2rem 5rem;border-top:2px solid var(--ink);
+  }
+  footer .fkick{font-family:'DM Mono',monospace;font-size:0.68rem;letter-spacing:0.3em;text-transform:uppercase;color:var(--red);margin-bottom:1rem;}
+  footer p{font-size:0.95rem;color:#3a352e;max-width:44rem;margin-bottom:0.9rem;}
+  footer .count{font-family:'Anton',sans-serif;font-size:1.4rem;color:var(--ink);}
+  .legend{display:flex;gap:1.6rem;flex-wrap:wrap;margin-top:1.4rem;font-family:'DM Mono',monospace;font-size:0.66rem;letter-spacing:0.08em;text-transform:uppercase;color:var(--aged);}
+  .legend span{display:flex;align-items:center;gap:0.5rem;}
+  .swatch{width:12px;height:12px;border-radius:50%;}
+  .swatch.maj{background:var(--red);}
+  .swatch.min{background:var(--aged);}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="kicker"><a href="../index.html" style="color:inherit;text-decoration:none">← The RedEye Archive</a> · A Front-Page Story</div>
+  <h1>On the Record:<br>One Paper, <span class="rainbow">the Long March</span> to Marriage</h1>
+  <p class="standfirst">Between 2008 and 2016, RedEye Chicago put LGBT life on its cover again and again — Prop 8 and Boystown, civil unions and DADT, Illinois saying <em>I do</em>, the Supreme Court saying <em>everyone</em>, and the morning after Orlando. Scroll the front pages a free daily ran while a country changed its mind.</p>
+  <div class="meta-row">
+    <div><strong>Source</strong> · RedEye Archive (Internet Archive)</div>
+    <div><strong>Span</strong> · Oct 2008 — Nov 2016</div>
+    <div><strong>Tap any cover</strong> · opens the full page</div>
+  </div>
+</header>
+
+<main>
+  <div class="spine"></div>
+  <div id="timeline"></div>
+
+  <div class="moment win"><p>June 26, 2015 — Love Wins.</p></div>
+</main>
+
+<footer>
+  <div class="fkick">— 30 —</div>
+  <p class="count">A decade. One front page at a time.</p>
+  <p>This is a single thread pulled from a much larger archive — roughly 800 complete editions of RedEye Chicago, saved before they could disappear. The same approach works for any thread: the Cubs drought, the CTA, a Chicago summer. Pick a topic, the archive remembers.</p>
+  <p style="font-family:'DM Mono',monospace;font-size:0.72rem;letter-spacing:0.08em;color:var(--aged);text-transform:uppercase;">Covers shown are the ones whose pages led with or flagged LGBT life and the marriage fight. Not every mention — just the ones that made the front.</p>
+  <p style="font-style:italic;color:var(--aged);font-size:0.8rem;border-top:1px solid var(--rule);padding-top:1rem;margin-top:0.5rem;max-width:44rem;">A personal, non-commercial preservation project. Not affiliated with, endorsed by, or sponsored by Tribune Publishing. Issues were sourced from the public Internet Archive. If you hold rights to this material and have concerns, please get in touch.</p>
+  <div class="legend">
+    <span><span class="swatch maj"></span> Front-page story</span>
+    <span><span class="swatch min"></span> Front-page flag / teaser</span>
+  </div>
+</footer>
+
+<script src="../redeye-data.js"></script>
+<script>
+const covers = [
+  {d:"2008-11-28",disp:"Fri · Nov 28, 2008",id:"1lJGbWnc30P9x6k76fv2eN3_k4_N5lUcZ",h:"Pride & Prejudice",desc:"RedEye takes a look at the state of gay rights — marriage, hate crimes, adoption, discrimination.",major:true,note:"Three weeks after Prop 8 passed in California."},
+  {d:"2008-12-09",disp:"Tue · Dec 9, 2008",id:"1jvkCJKR9ldtdf4i3Uvg0BsMgOCDumPVW",h:"Calling in Gay?",desc:"Activists draw attention to the same-sex marriage ban by encouraging gays to stay home.",major:false},
+  {d:"2009-04-14",disp:"Tue · Apr 14, 2009",id:"1gg8SCeeA0MEwklKWLIbrNDU9BtPs29no",h:"Gay marriage — why not here?",desc:"Iowa says yes. The question lands in Illinois.",major:false},
+  {d:"2009-04-23",disp:"Thu · Apr 23, 2009",id:"1o0ug5a1V_R0EmUc1Jf6Q1WJD7Ms0A992",h:"Iowa or Bust",desc:"Some same-sex couples are heading west to tie the knot — the latest on the state of gay unions.",major:true},
+  {d:"2009-05-27",disp:"Wed · May 27, 2009",id:"1fDWrHZY6S4P1-K-MNY84564EeDhBDRw2",h:"Wedded Dis",desc:"California court upholds its ban on gay marriage — what it means for Illinois.",major:true,note:"Demonstrators gathered in Boystown."},
+  {d:"2009-06-25",disp:"Thu · Jun 25, 2009",id:"1fleVw7U14SPA6R_INRL8SLmvRqH_3Z5j",h:"Beyond Boystown",desc:"There's plenty of pride on the South Side too — inside Chicago's other gay community.",major:true},
+  {d:"2009-06-27",disp:"Sat · Jun 27, 2009",id:"142UfaWDCMhNrDIZ9-fu4E-RsSNTNVou_",h:"This is Gay Chicago",desc:"The Pride parade is this weekend, but the community thrives year-round — a by-the-numbers look.",major:true},
+  {d:"2009-10-12",disp:"Mon · Oct 12, 2009",id:"1QTLa2KsraNApn-20e-2WEbyEbXGIjil1",h:"Gay Crusade",desc:"Chicago activists join the march on Washington to seek equal rights for all.",major:true},
+  {d:"2009-11-05",disp:"Thu · Nov 5, 2009",id:"1HfuNHV-wmBZYN5eYM1lHq5JGEvTJoU6E",h:"Gay marriage out in Maine",desc:"A ballot defeat — plus GOP candidates win big.",major:false},
+  {d:"2009-11-18",disp:"Wed · Nov 18, 2009",id:"1hVuebXEXHB4lmbsiaAz4n5u0iJqtHVYy",h:"The Fight to Be Me",desc:"Transgender people struggle to find acceptance — even within the LGBT community.",major:true},
+  {d:"2010-01-18",disp:"Mon · Jan 18, 2010",id:"1MQMUU6qnGl6LIHTu4OF6IKlIq8Xu8XxZ",h:"Gay couples fight for rights",desc:"The push continues into a new decade.",major:false},
+  {d:"2010-05-18",disp:"Tue · May 18, 2010",id:"1sKLfZY75V9HS8-OYXPlEkfsXocB2389F",h:"Exile",desc:"Going home is not an option: gay immigrants seek asylum and freedom of expression in the U.S.",major:true},
+  {d:"2010-08-05",disp:"Thu · Aug 5, 2010",id:"165Nj5OXkeR6B_o96IkohjNRd5g4nb3iR",h:"Prop. 8 Overturned",desc:"Supporters of gay marriage claim a California victory; opponents say it's not over yet.",major:true},
+  {d:"2010-08-11",disp:"Wed · Aug 11, 2010",id:"1UM5P74uZBCyoTJScVQMsk4ked529CWOx",h:"Str8 Guy, Gay Bar",desc:"Hetero men are Boystown bar workers — with a twist.",major:true},
+  {d:"2010-09-22",disp:"Wed · Sep 22, 2010",id:"1FeHP2guYgxVaX7Oz92WfRKSPzCFkN_Ju",h:"Repeal of military gay ban stalls",desc:"The fight over Don't Ask, Don't Tell drags on.",major:false},
+  {d:"2010-10-08",disp:"Fri · Oct 8, 2010",id:"1HLJJHix8sqTFGlrLcdy9GujDFji0-M9-",h:"Campaigns target LGBT suicides",desc:"A wave of awareness after a string of tragedies.",major:false},
+  {d:"2010-10-12",disp:"Tue · Oct 12, 2010",id:"1PdCxQAZbNTKCSJ1KJs4ppq3mLhfoz4Q_",h:"Chicago's Gay Travel Index",desc:"Arts, festivals, beaches — how the Windy City's rainbow cred stacks up.",major:true},
+  {d:"2010-10-20",disp:"Wed · Oct 20, 2010",id:"1AnCExUUDawv5hpLqV1eoZ28z2zcBD5e2",h:"DADT Update: military OKs gay recruits, for now",desc:"A court ruling briefly lifts the ban.",major:false},
+  {d:"2010-12-01",disp:"Wed · Dec 1, 2010",id:"1qPbEWKnZPSTwmbfFLHBv2qeKmfPmhOCp",h:"Civil Unions Ahead?",desc:"Illinois takes a big step toward allowing same-sex unions after an emotional House debate.",major:true},
+  {d:"2011-02-24",disp:"Thu · Feb 24, 2011",id:"1Fu8jrB7LBL79QTCYZmQta6c1YNZTocQi",h:"Obama's Big Gay Choice",desc:"The administration's shift on defending DOMA.",major:false},
+  {d:"2011-04-05",disp:"Tue · Apr 5, 2011",id:"1cVOxfuhzY6ve0XlCdTRSpGeqktNYdVCj",h:"Not Gay, Not Straight, Not Lying",desc:"Chicago's bisexual community is done being invisible.",major:true},
+  {d:"2011-04-12",disp:"Tue · Apr 12, 2011",id:"1OGUjWp5Gzy5-mUfALvugB2fDngdm0Yit",h:"LGBT groups take on Target",desc:"A boycott over corporate political donations.",major:false},
+  {d:"2011-05-24",disp:"Tue · May 24, 2011",id:"1f6MD-s1BscXWGR-HQ5BzV-xgCj-eCmRW",h:"Just Unioned",desc:"It's not marriage, but gay and lesbian couples are about to take the plunge.",major:true,note:"Illinois civil unions begin."},
+  {d:"2011-06-15",disp:"Wed · Jun 15, 2011",id:"16-n78gZdgqZk7ZzsHgRWpGVGKuF6vsGj",h:"Misstep by Pride Parade?",desc:"A scheduling controversy ahead of the march.",major:false},
+  {d:"2011-08-04",disp:"Thu · Aug 4, 2011",id:"1eIxtzbJQnGM5DBpk8nTuZxHgzudsavO3",h:"Gayborhood Expansion",desc:"New census numbers reveal a 40% jump in the state's same-sex households.",major:true},
+  {d:"2011-08-18",disp:"Thu · Aug 18, 2011",id:"1Rlrgy2DXpWDqTMpdgQrK-imyDVnjUPkR",h:"Closeted 9 to 5",desc:"Their family knows. Their friends know. But their co-workers? No way.",major:true},
+  {d:"2011-10-12",disp:"Wed · Oct 12, 2011",id:"1FrFOcZtjGsciSNEZfXXDtVBOK05gk18W",h:"The Out Crowd",desc:"It's not hard to find famous LGBT faces — but it wasn't always that way.",major:true},
+  {d:"2012-02-08",disp:"Wed · Feb 8, 2012",id:"1rJDfyZ8m3vVs8rK8wLjVQ-xPMgVcn4PE",h:"Rules of Engagements",desc:"Another Prop 8 ruling, another win for gay marriage. A Supreme Court case can't be far behind.",major:true},
+  {d:"2012-05-30",disp:"Wed · May 30, 2012",id:"1eMMgG-oi6DsfJobNi2qvAu8OX6MOHYWF",h:"Gay Court Press",desc:"Local same-sex couples are done waiting on Congress.",major:true},
+  {d:"2012-06-04",disp:"Mon · Jun 4, 2012",id:"1_iCVBKWE0z5aU1k06fGCs6iLac4mML97",h:"A turning point for gay blacks?",desc:"Shifting attitudes within Chicago's Black communities.",major:false},
+  {d:"2012-11-08",disp:"Thu · Nov 8, 2012",id:"1p0YxCvpLcBFk366X02Feyr9espEN1woR",h:"Happily Ever After?",desc:"Gay marriage won big at the polls, but the story's far from over.",major:true},
+  {d:"2013-01-03",disp:"Thu · Jan 3, 2013",id:"1tYw0q43TfJRhtrx6UDdscN83fqtYxcty",h:"Illinois?",desc:"Save the date — the state is THIS close to joining the same-sex marriage club.",major:true},
+  {d:"2013-02-15",disp:"Fri · Feb 15, 2013",id:"1Lp7wh_7JGB-NKGRnh2-20hqc1la1YAiy",h:"Save the Date?",desc:"The path to gay marriage in Illinois just got clearer.",major:true},
+  {d:"2013-03-27",disp:"Wed · Mar 27, 2013",id:"1LmCPpOLmQzL0spnTrn7NhTBSc_gqcGpC",h:"Ready or Not?",desc:"No matter the outcome, gay marriage's trip to the Supreme Court is historic.",major:true},
+  {d:"2013-04-03",disp:"Wed · Apr 3, 2013",id:"1SCebpj5eeJG9knZnw3wmE5g4n3dveHGm",h:"Mark Kirk: For gay marriage",desc:"An Illinois Republican senator comes around.",major:false},
+  {d:"2013-06-03",disp:"Mon · Jun 3, 2013",id:"1GWlopAL02YXlh7DqJR8Ux97ZktSV6X4w",h:"Gay marriage isn't coming to Illinois yet",desc:"A legislative stall before the breakthrough.",major:false},
+  {d:"2013-09-04",disp:"Wed · Sep 4, 2013",id:"1UCb6xhZ_3SEg8SS8BxwoFuqS9nCVNmRo",h:"New Safe Trans Space",desc:"Carving out room and recognition in the city.",major:false},
+  {d:"2013-09-20",disp:"Fri · Sep 20, 2013",id:"1smqK-egSoolzIGp2qMrN7WDrXw2BKpwF",h:"Pope: Lay off the gay talk",desc:"A new tone from the Vatican.",major:false},
+  {d:"2013-11-20",disp:"Wed · Nov 20, 2013",id:"1FoIiSqSGnhrMEroExBxqSSYKfRaGp_T8",h:"I Do",desc:"No gay. No straight. For Illinois, just marriage.",major:true,note:"Gov. Quinn signs same-sex marriage into law."},
+  {d:"2013-11-21",disp:"Thu · Nov 21, 2013",id:"1wh0KMTSZ9msuwBBgQmHjv-3D15DH-iT9",h:"Gay marriage: It's official!",desc:"The morning-after victory lap.",major:false},
+  {d:"2013-12-27",disp:"Fri · Dec 27, 2013",id:"1O4sqpOJs_THNgMvs0EypA1hyF7u4sQ18",h:"What's next for the LGBT fight?",desc:"After marriage, the agenda widens.",major:false},
+  {d:"2014-02-04",disp:"Tue · Feb 4, 2014",id:"1XwEpEKVV9T9hk0G_q1aNDTBJEGh2jNdx",h:"Greetings from a Gay Vacation Destination",desc:"Mapping where the community travels and why.",major:true},
+  {d:"2014-02-11",disp:"Tue · Feb 11, 2014",id:"1Ru787fnSPdnf16a-mjl6t893OdPtvgNP",h:"NFL Backs Gay Star",desc:"Michael Sam and the league's response.",major:false},
+  {d:"2014-02-24",disp:"Mon · Feb 24, 2014",id:"1SHRIDy-i_pDdfSUZgwMomUc9YTpxHHPb",h:"Chicago's gay weddings can't wait",desc:"Couples push against the timeline.",major:false},
+  {d:"2014-04-01",disp:"Tue · Apr 1, 2014",id:"1hFzp2fMKHu8cHp-4bbdBCQGczIfKyY7m",h:"'I Do' County",desc:"Gay couples hit the road to get hitched — right here.",major:true},
+  {d:"2014-06-02",disp:"Mon · Jun 2, 2014",id:"1vAJItL4xHqXtSIRG4_YNPuq4V5a4X7dl",h:"Gay couples celebrate marriage in Illinois",desc:"The law takes full effect.",major:false},
+  {d:"2014-06-27",disp:"Fri · Jun 27, 2014",id:"1K6m_wNS-_kcZzlAS15GUNNkqbfdyZsaE",h:"Wedding Party",desc:"Pride Parade focuses on same-sex marriage victories, the future — and fun.",major:true},
+  {d:"2014-10-07",disp:"Tue · Oct 7, 2014",id:"1EopdRYB2pkTue8PI2Ypq7ppocs57p74u",h:"Gay marriage's big gains",desc:"The map keeps turning over, state by state.",major:false},
+  {d:"2015-01-05",disp:"Mon · Jan 5, 2015",id:"14X8YogLZSl2oNQHfL9L0bbCNLIvoemOx",h:"Donating blood should be gay-OK",desc:"Challenging an outdated FDA ban.",major:false},
+  {d:"2015-02-23",disp:"Mon · Feb 23, 2015",id:"1HvLXnfGJ0c0xcI4p8jQyW5W54J9Yh0-c",h:"Happy birthday, gay marriage",desc:"Marking a year of legal weddings in Illinois.",major:false},
+  {d:"2015-04-15",disp:"Wed · Apr 15, 2015",id:"1oYFkMj8ArUaJNH-RkJQkl_XDMhZvDkxz",h:"Ad's gay couple invite Clinton to wedding",desc:"Representation goes mainstream — and political.",major:false},
+  {d:"2015-06-26",disp:"Fri · Jun 26, 2015",id:"1CcwGw2fgFy1CG9GKA0bq9VrQOFQVGYNA",h:"Love is Love",desc:"A local trans couple shares their journey to acceptance as Chicago preps for Pride.",major:true,note:"Published the morning the Supreme Court legalized same-sex marriage nationwide."},
+  {d:"2015-06-29",disp:"Mon · Jun 29, 2015",id:"1t-umcgtAWB5PjFTPShDX2L3wtdGP8drs",h:"Love Wins",desc:"Pride swells after the Supreme Court ruling.",major:true,note:"Obergefell v. Hodges."},
+  {d:"2015-08-04",disp:"Tue · Aug 4, 2015",id:"1MV-lY7kUClLDhoG5UvZ1iVoh_1t0-tdo",h:"Carlos in Charge",desc:"26 years old, Latino, gay — meet the youngest member of Chicago's City Council.",major:true},
+  {d:"2016-06-13",disp:"Mon · Jun 13, 2016",id:"1TaFxWwdHxQb4iidI9d32ZvEpsT3lFYZa",h:"\u201CWe will love one another.\u201D",desc:"President Obama, after a gunman killed at least 50 at a gay nightclub in Orlando — then the deadliest mass shooting in U.S. history.",major:true,note:"The morning after Pulse."},
+  {d:"2016-06-24",disp:"Fri · Jun 24, 2016",id:"1joFGTkf-IUsJArdekC4J8aGSBokljvkW",h:"Pride",desc:"All the details on Sunday's parade — and how bars and clubs upped security after Orlando.",major:true},
+  {d:"2016-08-16",disp:"Tue · Aug 16, 2016",id:"1fkbJKb_Ls7A15s1mAjHmKorqt9TLuGot",h:"Can the Olympics help LGBT Brazilians?",desc:"The global lens widens.",major:false},
+  {d:"2016-11-01",disp:"Tue · Nov 1, 2016",id:"1tqTqp5lpSnzQwJs6v_jMhQ-3HrxH7ZR4",h:"A Story Not Told",desc:"Tarell McCraney's story of growing up gay and Black rings with honesty in 'Moonlight.'",major:true},
+];
+
+const tl = document.getElementById('timeline');
+// map date -> full-issue PDF from the main archive index (loaded above)
+const PDF = {};
+((window.REDEYE_DATA&&window.REDEYE_DATA.records)||[]).forEach(r=>{ if(r.pdfFileId) PDF[r.date]=r.pdfFileId; });
+let lastYear = null;
+let i = 0;
+covers.forEach(c => {
+  const year = c.d.slice(0,4);
+  if(year !== lastYear){
+    const y = document.createElement('div');
+    y.className = 'year';
+    y.innerHTML = `<span class="dot"></span><span>${year}</span>`;
+    tl.appendChild(y);
+    lastYear = year;
+  }
+  const side = (i % 2 === 0) ? 'left' : 'right';
+  i++;
+  const a = document.createElement('a');
+  a.className = `entry ${side}${c.major ? ' major' : ''}`;
+  a.href = PDF[c.d] ? `https://drive.google.com/file/d/${PDF[c.d]}/view` : `../covers/${c.d}.jpg`;
+  a.target = '_blank';
+  a.rel = 'noopener';
+  const thumbUrl = `../covers/${c.d}.jpg`;
+  a.innerHTML = `
+    <div class="card">
+      <div class="thumb">
+        <img src="${thumbUrl}" alt="${c.h} — RedEye cover" loading="lazy"
+             onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+        <div class="fallback"><span>RED<br>EYE</span></div>
+      </div>
+      <div class="body">
+        <div class="date">${c.disp}</div>
+        <div class="head">${c.h}</div>
+        <div class="desc">${c.desc}</div>
+        ${c.note ? `<div class="note">${c.note}</div>` : ''}
+        <span class="tag">${c.major ? 'Cover story' : 'Front-page flag'}</span>
+      </div>
+    </div>`;
+  tl.appendChild(a);
+});
+</script>
+</body>
+</html>
