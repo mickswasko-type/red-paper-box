@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Daily Front Pages — Summer in Grant Park (2008–2016)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Fraunces:ital,opsz,wght@0,9..144,500;1,9..144,400&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#f3efe5;
+    --ink:#1c1a17;
+    --red:#e22319;
+    --aged:#6b6457;
+    --rule:#d8d2c4;
+    --card:#fbf9f3;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'Newsreader',Georgia,serif;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+    background-image:
+      radial-gradient(circle at 50% 0,rgba(0,0,0,0.02),transparent 60%),
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)' opacity='0.025'/%3E%3C/svg%3E");
+  }
+
+  header{max-width:1180px;margin:0 auto;padding:4.5rem 2rem 2.5rem;}
+  .kicker{
+    font-family:'DM Mono',monospace;font-size:0.7rem;letter-spacing:0.42em;
+    text-transform:uppercase;color:var(--red);margin-bottom:1.4rem;
+    display:flex;align-items:center;gap:0.8rem;
+  }
+  .kicker::before{content:"";width:34px;height:10px;background:var(--red);display:inline-block;}
+  h1{
+    font-family:'Anton',sans-serif;font-weight:400;
+    font-size:clamp(2.8rem,7.5vw,6.4rem);line-height:0.92;
+    letter-spacing:-0.01em;text-transform:uppercase;margin-bottom:1.6rem;
+  }
+  h1 .stage{
+    background:linear-gradient(90deg,#e22319 0%,#f07a13 24%,#f5c518 46%,#2bbfd4 72%,#7a3a9e 100%);
+    -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
+  }
+  .standfirst{
+    font-size:clamp(1.05rem,1.6vw,1.35rem);max-width:46rem;color:#332f29;
+    border-left:3px solid var(--red);padding-left:1.4rem;
+  }
+  .standfirst em{font-style:italic;color:var(--aged);}
+  .meta-row{
+    margin-top:2.2rem;display:flex;flex-wrap:wrap;gap:1.6rem 2.6rem;
+    font-family:'DM Mono',monospace;font-size:0.72rem;letter-spacing:0.08em;
+    text-transform:uppercase;color:var(--aged);
+    border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);
+    padding:1.1rem 0;
+  }
+  .meta-row strong{color:var(--ink);font-weight:500;}
+
+  main{max-width:1180px;margin:0 auto;padding:3rem 2rem 2rem;position:relative;}
+  .spine{
+    position:absolute;left:calc(2rem + 7px);top:3rem;bottom:6rem;width:2px;
+    background:linear-gradient(180deg,#e22319,#f07a13,#f5c518,#2bbfd4,#7a3a9e);
+    opacity:0.55;
+  }
+  @media(min-width:760px){.spine{left:calc(50% - 1px);}}
+
+  .year{
+    position:relative;display:flex;align-items:center;gap:1rem;
+    margin:3.4rem 0 1.6rem;padding-left:2.6rem;
+  }
+  @media(min-width:760px){.year{justify-content:center;padding-left:0;}}
+  .year span{
+    font-family:'Anton',sans-serif;font-size:2rem;letter-spacing:0.02em;
+    background:var(--paper);padding:0 1rem;color:var(--ink);position:relative;z-index:2;
+  }
+  .year .dot{
+    position:absolute;left:0;width:16px;height:16px;border-radius:50%;
+    background:var(--red);border:3px solid var(--paper);z-index:2;
+  }
+  @media(min-width:760px){.year .dot{left:calc(50% - 8px);}}
+
+  .entry{position:relative;padding-left:2.6rem;margin-bottom:1.8rem;}
+  @media(min-width:760px){
+    .entry{width:50%;padding-left:0;}
+    .entry.left{margin-right:auto;padding-right:3rem;}
+    .entry.right{margin-left:auto;padding-left:3rem;}
+  }
+
+  .card{
+    background:var(--card);border:1px solid var(--rule);
+    display:flex;flex-direction:column;text-decoration:none;color:inherit;
+    max-width:340px;overflow:hidden;
+    transition:transform .18s ease,box-shadow .18s ease,border-color .18s ease;
+    box-shadow:0 1px 0 rgba(0,0,0,0.02);
+  }
+  @media(min-width:760px){
+    .entry.left .card{margin-left:auto;}
+    .entry.right .card{margin-right:auto;}
+  }
+  .card:hover{transform:translateY(-3px);box-shadow:0 14px 30px -14px rgba(0,0,0,0.4);border-color:var(--red);}
+  .entry.major .card{border-top:4px solid var(--red);}
+
+  .thumb{
+    width:100%;height:360px;background:#e7e2d6;
+    overflow:hidden;position:relative;border-bottom:1px solid var(--rule);
+    display:flex;align-items:center;justify-content:center;
+  }
+  .thumb img{width:100%;height:100%;object-fit:contain;display:block;}
+  .thumb .fallback{
+    position:absolute;inset:0;display:none;align-items:center;justify-content:center;
+    font-family:'Anton',sans-serif;color:var(--red);font-size:1.4rem;text-align:center;
+    flex-direction:column;gap:4px;padding:6px;
+  }
+  .body{flex:1;min-width:0;display:flex;flex-direction:column;justify-content:flex-start;padding:1rem 1.1rem 1.2rem;}
+  .date{
+    font-family:'Fraunces',Georgia,serif;font-size:0.78rem;font-weight:500;
+    letter-spacing:0.13em;text-transform:uppercase;color:var(--red);margin-bottom:0.45rem;
+  }
+  .head{
+    font-family:'Anton',sans-serif;font-size:1.18rem;line-height:1.06;
+    text-transform:uppercase;letter-spacing:0.005em;margin-bottom:0.45rem;
+  }
+  .entry:not(.major) .head{font-size:0.98rem;}
+  .desc{font-size:0.85rem;color:#4a463e;line-height:1.4;}
+  .tag{
+    display:inline-block;margin-top:0.5rem;font-family:'DM Mono',monospace;
+    font-size:0.55rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--aged);
+  }
+  .note{
+    font-style:italic;font-size:0.82rem;color:var(--aged);margin-top:0.5rem;
+    padding-top:0.5rem;border-top:1px dotted var(--rule);
+  }
+
+  .moment{
+    position:relative;z-index:2;text-align:center;max-width:38rem;margin:3rem auto;
+    padding:1.6rem;background:var(--paper);
+  }
+  .moment.win p{color:var(--red);font-size:1.5rem;font-family:'Anton',sans-serif;text-transform:uppercase;letter-spacing:0.01em;}
+
+  footer{max-width:1180px;margin:0 auto;padding:3rem 2rem 5rem;border-top:2px solid var(--ink);}
+  footer .fkick{font-family:'DM Mono',monospace;font-size:0.68rem;letter-spacing:0.3em;text-transform:uppercase;color:var(--red);margin-bottom:1rem;}
+  footer p{font-size:0.95rem;color:#3a352e;max-width:44rem;margin-bottom:0.9rem;}
+  footer .count{font-family:'Anton',sans-serif;font-size:1.4rem;color:var(--ink);}
+  .legend{display:flex;gap:1.6rem;flex-wrap:wrap;margin-top:1.4rem;font-family:'DM Mono',monospace;font-size:0.66rem;letter-spacing:0.08em;text-transform:uppercase;color:var(--aged);}
+  .legend span{display:flex;align-items:center;gap:0.5rem;}
+  .swatch{width:12px;height:12px;border-radius:50%;}
+  .swatch.maj{background:var(--red);}
+  .swatch.min{background:var(--aged);}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="kicker"><a href="../index.html" style="color:inherit;text-decoration:none">← The RedEye Archive</a> · Summer in Grant Park</div>
+  <h1>Lolla Season: Nine Augusts on the Cover</h1>
+  <p class="standfirst">Every summer, the same ritual played out on RedEye's front page: the lineup drop in spring, the breathless preview the Friday before, the wrung-out recap on Monday. From Kanye closing the 2008 fest to Sir Paul headlining to the 25th anniversary, here's a decade of Lollapalooza as the free daily covered it — <em>mud, music, and more mud</em>.</p>
+  <div class="meta-row">
+    <div><strong>Source</strong> · RedEye Archive (Internet Archive)</div>
+    <div><strong>Span</strong> · Aug 2008 — Jul 2016</div>
+    <div><strong>Tap any cover</strong> · opens the full issue</div>
+  </div>
+</header>
+
+<main>
+  <div class="spine"></div>
+  <div id="timeline"></div>
+  <div class="moment win"><p>2016 — Twenty-five years in Grant Park.</p></div>
+</main>
+
+<footer>
+  <div class="fkick">— 30 —</div>
+  <p class="count">Same park. Same weekend. Nine summers.</p>
+  <p>This is one collection pulled from a much larger archive — the complete run of RedEye Chicago, saved and dated. Pick another thread — the Blackhawks Cups, a Chicago election, the coldest winters — and the archive remembers.</p>
+  <p style="font-style:italic;color:var(--aged);font-size:0.8rem;border-top:1px solid var(--rule);padding-top:1rem;margin-top:0.5rem;max-width:44rem;">A personal, non-commercial preservation project. Not affiliated with, endorsed by, or sponsored by Tribune Publishing. Issues were sourced from the public Internet Archive. If you hold rights to this material and have concerns, please get in touch.</p>
+  <div class="legend">
+    <span><span class="swatch maj"></span> Preview / recap cover</span>
+    <span><span class="swatch min"></span> Lineup reveal</span>
+  </div>
+</footer>
+
+<script src="../redeye-data.js"></script>
+<script>
+const covers = [
+  {d:"2008-08-01",disp:"Fri · Aug 1, 2008",id:"1a0DTT4sRXkDgx0EdWuQ89qikm8ywm_K-",h:"Lolla",desc:"Everything you need to plan your music-filled weekend.",major:true,note:"The festival's third year in Grant Park."},
+  {d:"2008-08-02",disp:"Sat · Aug 2, 2008",id:"12V-D--dRiZwAfWplpUwIFQvfR3U3L8lh",h:"Lolla: Day 1",desc:"How to get the fest off to a hot start.",major:false},
+  {d:"2008-08-04",disp:"Mon · Aug 4, 2008",id:"1TZtRnu5QAPgHpIt1Pk5qb7shB55lohyb",h:"Lollapaloozin' It",desc:"225,000 turn out for Chicago's mega music fest — and we've got all the highlights.",major:true,note:"Kanye West closed it out on Sunday night."},
+  {d:"2009-08-07",disp:"Fri · Aug 7, 2009",id:"1mPh4gfAnYYuXHp0yCKXy5cfR29K1W1Px",h:"Lolla Back Y'all!",desc:"The bands, the plans and Perry Farrell — our Lollapalooza coverage begins now.",major:true},
+  {d:"2009-08-10",disp:"Mon · Aug 10, 2009",id:"1ii2rWBsYJ0hEYnGS0xyGVxyxiZADuFii",h:"Lotsa Lolla",desc:"Pics, reviews, and RedEye's report card on the weekend.",major:true},
+  {d:"2010-04-06",disp:"Tue · Apr 6, 2010",id:"17IaUJJTl4aZzX6nFh5EvnrMiDi9wkAIc",h:"Who's That Lady?",desc:"Gaga, Soundgarden, Arcade Fire and friends ready to storm Grant Park — the lineup is here.",major:false},
+  {d:"2010-08-06",disp:"Fri · Aug 6, 2010",id:"1FAtNYgloCa0QL_tbvXHdsMnnVG6Km7Fe",h:"Lollapalooza's Most Wanted",desc:"The bands. The food. The after-parties. The Gaga. Everything you need to rock out.",major:true,note:"The year of Lady Gaga."},
+  {d:"2010-08-08",disp:"Sun · Aug 8, 2010",id:"1Re7bdMVtJYmbOc-qxHCVHupcW_1APs5_",h:"One Giant Park. 285,000 Fans.",desc:"142 performances, one weekend — Lolla, by the numbers.",major:true},
+  {d:"2011-08-05",disp:"Fri · Aug 5, 2011",id:"1rmWGE5Xl13X2ehZggHA_eHr9JYPi9acD",h:"Lolla 2011: Rated Em",desc:"Rappers, rockers and lobster corn dogs — everything you need to lose yourself in the fest.",major:true},
+  {d:"2012-04-11",disp:"Wed · Apr 11, 2012",id:"1EkoJ5Ut41AysYbTmmoCIrcFvchz-wLUP",h:"Lollapalooza 2012",desc:"Red? White? Black? Let the countdown begin — this year's lineup will rock you.",major:false},
+  {d:"2012-08-03",disp:"Fri · Aug 3, 2012",id:"1s4m4G3nAT9hnGJnbns-VD7moLa98QFr2",h:"Bright Lights, Lolla",desc:"Big acts and plenty of mayhem — get ready for a wild weekend.",major:true,note:"A severe storm would force an evacuation of Grant Park that Saturday."},
+  {d:"2013-08-02",disp:"Fri · Aug 2, 2013",id:"1wTr3qj7lRZBprYjMEyJfB0vWqVEbJbUH",h:"No Sleep! Till Monday",desc:"Put your hands in the air, party people — it's time to Lolla.",major:true},
+  {d:"2013-08-05",disp:"Mon · Aug 5, 2013",id:"1G3k-Td1T1uZutuxpaTz1k1vaHLG9qO3t",h:"We Came, We Saw, We Lolla'd",desc:"And we remember everything — welcome to the after-after-after party.",major:true},
+  {d:"2014-03-26",disp:"Wed · Mar 26, 2014",id:"1SGt0hhD62BZrVsKPzk50XxitBZdDQr6n",h:"Lolla '14",desc:"The lineup has a surprise up its sleeve — Outkast reunites.",major:false},
+  {d:"2014-08-01",disp:"Fri · Aug 1, 2014",id:"1zGqIgLzRXOvM-YjpzNNU4RGStSMSfyJD",h:"Small Bands, Big Sounds",desc:"20 non-headliners bound to make waves this weekend.",major:true},
+  {d:"2015-03-25",disp:"Wed · Mar 25, 2015",id:"1569vQOEEkRkqQ60vlVSEikBIn20ZKapP",h:"All You Need Is Lolla",desc:"Maybe we're amazed by headliner Sir Paul, but with this lineup, we're happy to let it be.",major:true,note:"Paul McCartney headlined — and RedEye went all in on the Beatles puns."},
+  {d:"2016-03-24",disp:"Thu · Mar 24, 2016",id:"1aDdnTcbm7ZyHvmCHr9hbwTJcJYzrdBVw",h:"The 30 Best (and Worst) Acts",desc:"Radiohead, Lana Del Rey and the rest of the 2016 lineup, ranked.",major:false},
+  {d:"2016-07-28",disp:"Thu · Jul 28, 2016",id:"1AXm-77GWR1mz34jUoMcGBxjqU_1QEBPb",h:"Discover Legendary Lolla",desc:"J. Cole, Radiohead, Red Hot Chili Peppers, LCD Soundsystem and more — 25 years in Grant Park.",major:true,note:"The 25th anniversary, expanded to four days."},
+];
+
+const tl = document.getElementById('timeline');
+// map date -> full-issue PDF from the main archive index (loaded above)
+const PDF = {};
+((window.REDEYE_DATA&&window.REDEYE_DATA.records)||[]).forEach(r=>{ if(r.pdfFileId) PDF[r.date]=r.pdfFileId; });
+let lastYear = null;
+let i = 0;
+covers.forEach(c => {
+  const year = c.d.slice(0,4);
+  if(year !== lastYear){
+    const y = document.createElement('div');
+    y.className = 'year';
+    y.innerHTML = `<span class="dot"></span><span>${year}</span>`;
+    tl.appendChild(y);
+    lastYear = year;
+  }
+  const side = (i % 2 === 0) ? 'left' : 'right';
+  i++;
+  const a = document.createElement('a');
+  a.className = `entry ${side}${c.major ? ' major' : ''}`;
+  a.href = PDF[c.d] ? `https://drive.google.com/file/d/${PDF[c.d]}/view` : `../covers/${c.d}.jpg`;
+  a.target = '_blank';
+  a.rel = 'noopener';
+  const thumbUrl = `../covers/${c.d}.jpg`;
+  a.innerHTML = `
+    <div class="card">
+      <div class="thumb">
+        <img src="${thumbUrl}" alt="${c.h} — RedEye cover" loading="lazy"
+             onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+        <div class="fallback"><span>RED<br>EYE</span></div>
+      </div>
+      <div class="body">
+        <div class="date">${c.disp}</div>
+        <div class="head">${c.h}</div>
+        <div class="desc">${c.desc}</div>
+        ${c.note ? `<div class="note">${c.note}</div>` : ''}
+        <span class="tag">${c.major ? 'Preview / recap' : 'Lineup reveal'}</span>
+      </div>
+    </div>`;
+  tl.appendChild(a);
+});
+</script>
+</body>
+</html>
