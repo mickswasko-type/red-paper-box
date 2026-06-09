@@ -64,6 +64,13 @@
     padding:1rem 0;
   }
   .meta-row strong{color:var(--ink);font-weight:500;}
+  .gamecta{display:inline-flex;flex-direction:column;gap:2px;margin-top:1.4rem;text-decoration:none;color:inherit;
+     border:1px solid var(--rule);background:var(--card);border-left:4px solid var(--red);
+     padding:0.7rem 1rem;transition:box-shadow .18s ease,transform .18s ease;}
+  .gamecta:hover{transform:translateY(-2px);box-shadow:0 12px 26px -16px rgba(0,0,0,0.4);}
+  .gamecta .gk{font-family:'DM Mono',monospace;font-size:0.58rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--red);}
+  .gamecta .gt{font-family:'Newsreader',serif;font-size:1rem;color:#332f29;}
+  .gamecta .gt b{font-family:'Anton',sans-serif;text-transform:uppercase;letter-spacing:0.01em;color:var(--ink);font-weight:400;}
 
   /* ---------- Controls ---------- */
   .controls{
@@ -222,6 +229,10 @@
     <div><strong>Tap any cover</strong> · opens the full PDF</div>
     <div><strong>Source</strong> · Internet Archive → Google Drive</div>
   </div>
+  <a class="gamecta" href="game/">
+    <span class="gk">New · a game</span>
+    <span class="gt">Think you remember the era? <b>Guess the Year ▸</b></span>
+  </a>
 </header>
 
 <div class="controls">

@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<meta name="description" content="A small guessing game built on a personal newspaper archive.">
+<title>Guess the Year</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Fraunces:ital,opsz,wght@0,9..144,500;1,9..144,400&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#f3efe5; --ink:#1c1a17; --red:#e22319; --aged:#6b6457;
+    --rule:#d8d2c4; --card:#fbf9f3; --green:#3aa651;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{-webkit-text-size-adjust:100%;}
+  body{
+    background:var(--paper);color:var(--ink);
+    font-family:'Newsreader',Georgia,serif;line-height:1.55;-webkit-font-smoothing:antialiased;
+    background-image:
+      radial-gradient(circle at 50% 0,rgba(0,0,0,0.02),transparent 60%),
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)' opacity='0.025'/%3E%3C/svg%3E");
+  }
+  .wrap{max-width:560px;margin:0 auto;padding:1.1rem 1.1rem calc(1.4rem + env(safe-area-inset-bottom));min-height:100vh;}
+
+  .top{display:flex;align-items:center;justify-content:space-between;gap:1rem;margin-bottom:0.9rem;}
+  .brand{font-family:'DM Mono',monospace;font-size:0.62rem;letter-spacing:0.22em;text-transform:uppercase;color:var(--aged);text-decoration:none;}
+  .brand b{color:var(--red);}
+  .brand a,a.back{color:inherit;text-decoration:none;}
+
+  h1{font-family:'Anton',sans-serif;font-weight:400;text-transform:uppercase;line-height:0.9;
+     font-size:clamp(2.4rem,11vw,3.4rem);letter-spacing:-0.01em;margin:0.2rem 0 0.7rem;}
+  h1 .yr{color:var(--red);}
+  .kicker{font-family:'DM Mono',monospace;font-size:0.64rem;letter-spacing:0.24em;text-transform:uppercase;color:var(--red);
+     display:flex;align-items:center;gap:0.6rem;margin-bottom:0.6rem;}
+  .kicker::before{content:"";width:28px;height:9px;background:var(--red);}
+
+  .lede{font-size:1.02rem;color:#332f29;margin-bottom:1rem;}
+  .disclaimer{font-size:0.86rem;font-style:italic;color:var(--aged);border-left:3px solid var(--red);
+     padding:0.5rem 0 0.5rem 0.9rem;margin-bottom:1.3rem;}
+
+  .btn{font-family:'Anton',sans-serif;text-transform:uppercase;letter-spacing:0.02em;font-size:1.15rem;
+     background:var(--red);color:#fff;border:none;border-radius:3px;padding:0.85rem 1.2rem;width:100%;
+     cursor:pointer;transition:filter .15s, transform .1s;}
+  .btn:active{transform:translateY(1px);}
+  .btn:hover{filter:brightness(1.06);}
+  .btn.ghost{background:transparent;color:var(--ink);border:1px solid var(--rule);}
+  .btn.ghost:hover{border-color:var(--red);color:var(--red);}
+  .btn.sm{font-size:0.82rem;padding:0.6rem 0.9rem;width:auto;}
+
+  .hide{display:none !important;}
+
+  /* ---- HUD ---- */
+  .hud{display:flex;align-items:center;justify-content:space-between;gap:0.7rem;margin-bottom:0.7rem;}
+  .scores{display:flex;gap:1.3rem;}
+  .stat .l{font-family:'DM Mono',monospace;font-size:0.56rem;letter-spacing:0.16em;text-transform:uppercase;color:var(--aged);}
+  .stat .v{font-family:'Anton',sans-serif;font-size:1.7rem;line-height:1;}
+  .stat .v.red{color:var(--red);}
+
+  /* ---- Cover ---- */
+  .stage{position:relative;background:#e7e2d6;border:1px solid var(--rule);border-radius:3px;overflow:hidden;
+     height:min(58vh,520px);display:flex;align-items:center;justify-content:center;}
+  .stage img{max-width:100%;max-height:100%;width:auto;height:auto;object-fit:contain;display:block;cursor:zoom-in;}
+  .stage .fallback{position:absolute;inset:0;display:none;align-items:center;justify-content:center;flex-direction:column;
+     font-family:'Anton',sans-serif;color:var(--red);font-size:1.6rem;gap:4px;}
+  .hint{font-family:'DM Mono',monospace;font-size:0.55rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--aged);
+     text-align:center;margin:0.45rem 0 0.7rem;}
+
+  /* ---- Year grid ---- */
+  .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:0.55rem;}
+  .yrbtn{font-family:'Anton',sans-serif;font-size:1.5rem;letter-spacing:0.01em;color:var(--ink);
+     background:var(--card);border:1px solid var(--rule);border-radius:3px;padding:0.85rem 0;cursor:pointer;
+     transition:background .12s,color .12s,border-color .12s,transform .08s;-webkit-tap-highlight-color:transparent;}
+  .yrbtn:hover{border-color:var(--red);color:var(--red);}
+  .yrbtn:active{transform:translateY(1px);}
+  .yrbtn.correct{background:var(--green);border-color:var(--green);color:#fff;}
+  .yrbtn.wrong{background:var(--red);border-color:var(--red);color:#fff;}
+  .yrbtn[disabled]{cursor:default;}
+
+  .bankrow{margin-top:0.7rem;}
+  .bankrow .btn{background:var(--ink);}
+  .bankrow .btn:hover{filter:none;background:#000;}
+
+  /* ---- Toast (correct reveal) ---- */
+  .toast{position:fixed;left:50%;bottom:calc(1.2rem + env(safe-area-inset-bottom));transform:translateX(-50%) translateY(20px);
+     background:var(--ink);color:var(--paper);font-family:'Fraunces',serif;font-size:0.95rem;letter-spacing:0.02em;
+     padding:0.7rem 1.1rem;border-radius:4px;opacity:0;transition:opacity .2s,transform .2s;pointer-events:none;z-index:60;
+     max-width:90vw;text-align:center;}
+  .toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+  .toast b{color:#fff;}
+
+  /* ---- End screen ---- */
+  .verdict{font-family:'Anton',sans-serif;text-transform:uppercase;font-size:clamp(2rem,9vw,3rem);line-height:0.92;margin-bottom:0.5rem;}
+  .verdict.bust{color:var(--red);}
+  .reveal{font-family:'Fraunces',serif;font-size:1.05rem;color:#332f29;margin-bottom:0.4rem;}
+  .final{font-family:'DM Mono',monospace;font-size:0.7rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--aged);margin-bottom:1.2rem;}
+  .final b{color:var(--ink);font-size:1.3rem;font-family:'Anton',sans-serif;}
+
+  /* ---- Name entry ---- */
+  .namebox{margin:0.6rem 0 1.1rem;}
+  .namebox label{font-family:'DM Mono',monospace;font-size:0.62rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--aged);display:block;margin-bottom:0.4rem;}
+  .namebox .row{display:flex;gap:0.5rem;}
+  #pname{flex:1;font-family:'Anton',sans-serif;font-size:1.3rem;letter-spacing:0.04em;text-transform:uppercase;
+     padding:0.55rem 0.7rem;background:var(--card);border:1px solid var(--rule);border-radius:3px;color:var(--ink);outline:none;}
+  #pname:focus{border-color:var(--red);}
+
+  /* ---- Leaderboard ---- */
+  .lbtitle{font-family:'DM Mono',monospace;font-size:0.62rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--red);
+     margin:1.4rem 0 0.5rem;display:flex;justify-content:space-between;align-items:baseline;}
+  .lbtitle .mode{color:var(--aged);font-size:0.55rem;letter-spacing:0.12em;}
+  table.lb{width:100%;border-collapse:collapse;font-size:0.92rem;}
+  table.lb th,table.lb td{text-align:left;padding:0.5rem 0.4rem;border-bottom:1px solid var(--rule);}
+  table.lb th{font-family:'DM Mono',monospace;font-size:0.56rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--aged);font-weight:400;}
+  table.lb td.r{font-family:'Anton',sans-serif;color:var(--aged);width:2ch;}
+  table.lb td.nm{font-family:'Anton',sans-serif;text-transform:uppercase;letter-spacing:0.01em;}
+  table.lb td.st{font-family:'Anton',sans-serif;color:var(--red);text-align:right;}
+  table.lb td.dt{font-family:'DM Mono',monospace;font-size:0.62rem;color:var(--aged);text-align:right;white-space:nowrap;}
+  table.lb tr.you td{background:rgba(226,35,25,0.06);}
+  .lbempty{font-style:italic;color:var(--aged);font-size:0.9rem;padding:0.6rem 0;}
+
+  .footrow{margin-top:1.4rem;display:flex;gap:0.6rem;}
+  .smallnote{font-family:'DM Mono',monospace;font-size:0.58rem;letter-spacing:0.06em;color:var(--aged);text-transform:uppercase;margin-top:1.6rem;text-align:center;}
+
+  /* ---- Lightbox ---- */
+  .lightbox{position:fixed;inset:0;background:rgba(20,18,15,0.94);display:none;align-items:center;justify-content:center;z-index:90;padding:1rem;cursor:zoom-out;}
+  .lightbox.show{display:flex;}
+  .lightbox img{max-width:100%;max-height:100%;object-fit:contain;}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="top">
+    <a class="brand" href="../index.html">← <b>RedEye</b> Archive</a>
+    <span class="brand" id="poolnote"></span>
+  </div>
+
+  <!-- INTRO -->
+  <section id="intro">
+    <div class="kicker">A RedEye Archive Game</div>
+    <h1>Guess the <span class="yr">Year</span></h1>
+    <p class="lede">We show you a RedEye front page. You tell us the year it ran. Get it right, your streak grows. Get it wrong, the run's over. Bank your streak whenever you lose your nerve — that's the only way onto the board.</p>
+    <p class="disclaimer">The date's on the page. Don't zoom in on it. We're trusting you. This was a paper for people on the Red Line at 8 a.m. — act accordingly.</p>
+    <button class="btn" id="startBtn">Start a run</button>
+    <p class="smallnote" id="introBest"></p>
+    <div class="footrow"><button class="btn ghost sm" id="seeLbBtn">See the leaderboard</button></div>
+  </section>
+
+  <!-- PLAY -->
+  <section id="play" class="hide">
+    <div class="hud">
+      <div class="scores">
+        <div class="stat"><div class="l">Streak</div><div class="v red" id="streakV">0</div></div>
+        <div class="stat"><div class="l">Best</div><div class="v" id="bestV">0</div></div>
+      </div>
+    </div>
+    <div class="stage">
+      <img id="cover" alt="RedEye front page" draggable="false">
+      <div class="fallback" id="coverFb"><span>RED</span><span>EYE</span></div>
+    </div>
+    <div class="hint">What year did this run? · tap the cover to enlarge</div>
+    <div class="grid" id="years"></div>
+    <div class="bankrow"><button class="btn" id="bankBtn">Bank &amp; quit · <span id="bankStreak">0</span></button></div>
+  </section>
+
+  <!-- END -->
+  <section id="over" class="hide">
+    <div class="kicker" id="overKicker">Run over</div>
+    <div class="verdict" id="verdict">—</div>
+    <p class="reveal" id="revealLine"></p>
+    <p class="final">Streak banked · <b id="finalStreak">0</b></p>
+
+    <div id="bankPrompt" class="hide">
+      <div class="namebox">
+        <label for="pname">Name or initials for the board (max 12)</label>
+        <div class="row">
+          <input id="pname" maxlength="12" autocomplete="off" autocapitalize="characters" placeholder="WHO ARE YOU">
+          <button class="btn sm" id="submitName" style="width:auto;">Post</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="lbtitle">Top 10 · all time <span class="mode" id="lbMode"></span></div>
+    <table class="lb"><thead><tr><th></th><th>Name</th><th style="text-align:right">Streak</th><th style="text-align:right">When</th></tr></thead>
+      <tbody id="lbBody"></tbody></table>
+    <div class="lbempty hide" id="lbEmpty">No scores yet. Be the first to bank one.</div>
+
+    <div class="footrow">
+      <button class="btn" id="againBtn">Play again</button>
+      <a class="btn ghost sm" href="../index.html" style="display:flex;align-items:center;">Archive</a>
+    </div>
+  </section>
+
+</div>
+
+<div class="toast" id="toast"></div>
+<div class="lightbox" id="lightbox"><img id="lbImg" alt="front page, enlarged"></div>
+
+<script src="../redeye-data.js"></script>
+<script>
+(function(){
+  "use strict";
+
+  /* ============================================================
+     LEADERBOARD CONFIG
+     Leave blank for a private, per-device leaderboard (localStorage).
+     To enable a SHARED leaderboard, paste your Supabase project URL +
+     anon (public) key here. See README "Guess the Year — leaderboard".
+     ============================================================ */
+  const SUPABASE_URL = "";   // e.g. "https://abcd1234.supabase.co"
+  const SUPABASE_ANON = "";  // the anon/public key (safe to ship)
+  const REMOTE = !!(SUPABASE_URL && SUPABASE_ANON);
+
+  const MONTHS = ["January","February","March","April","May","June","July",
+    "August","September","October","November","December"];
+  const YEARS = [2008,2009,2010,2011,2012,2013,2014,2015,2016];
+
+  const DATA = (window.REDEYE_DATA && window.REDEYE_DATA.records) || [];
+  const POOL = DATA.filter(r => r.cover && r.gid);   // playable covers, opaque ids
+  const CAP = POOL.length;                            // streak can't exceed archive size
+
+  const $ = id => document.getElementById(id);
+  const imgPath = r => `img/${r.gid}.jpg`;
+  const prettyDate = iso => { const [y,m,d]=iso.split('-'); return `${MONTHS[+m-1]} ${+d}, ${y}`; };
+
+  // ---- persistent personal best ----
+  const BEST_KEY = "redeye_game_best";
+  let best = +(localStorage.getItem(BEST_KEY) || 0);
+
+  // ---- run state ----
+  let deck = [], dpos = 0, streak = 0, current = null, preloader = null, locked = false;
+
+  function shuffle(a){ a=a.slice(); for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];} return a; }
+
+  function newRun(){
+    deck = shuffle(POOL); dpos = 0; streak = 0; locked = false;
+    $('streakV').textContent = '0'; $('bestV').textContent = best; $('bankStreak').textContent='0';
+    show('play'); nextCover();
+  }
+
+  function drawNext(){
+    if(dpos >= deck.length) deck = shuffle(POOL), dpos = 0; // exhausted full archive -> reshuffle
+    return deck[dpos++];
+  }
+
+  function nextCover(){
+    locked = false;
+    current = drawNext();
+    const img = $('cover'), fb = $('coverFb');
+    fb.style.display='none'; img.style.display='block';
+    img.onerror = () => { // broken image: skip without penalty
+      if(deck.length>1){ nextCover(); }
+      else { img.style.display='none'; fb.style.display='flex'; }
+    };
+    img.src = imgPath(current);
+    // reset year buttons
+    [...$('years').children].forEach(b=>{ b.className='yrbtn'; b.disabled=false; });
+    // preload the upcoming cover so advancing is instant
+    const upcoming = deck[dpos] || deck[0];
+    if(upcoming){ preloader = new Image(); preloader.src = imgPath(upcoming); }
+  }
+
+  function buildYearGrid(){
+    $('years').innerHTML='';
+    YEARS.forEach(y=>{
+      const b=document.createElement('button');
+      b.className='yrbtn'; b.textContent=y; b.dataset.year=y;
+      b.addEventListener('click',()=>guess(y,b));
+      $('years').appendChild(b);
+    });
+  }
+
+  function guess(year, btn){
+    if(locked) return; locked = true;
+    const answer = current.year;
+    if(year === answer){
+      btn.classList.add('correct');
+      streak++;
+      $('streakV').textContent = streak; $('bankStreak').textContent = streak;
+      if(streak>best){ best=streak; localStorage.setItem(BEST_KEY,best); $('bestV').textContent=best; }
+      toast(`${prettyDate(current.date)} — nice.`);
+      setTimeout(nextCover, 850);
+    } else {
+      btn.classList.add('wrong');
+      [...$('years').children].forEach(b=>{ b.disabled=true; if(+b.dataset.year===answer) b.classList.add('correct'); });
+      setTimeout(()=>endRun(false), 950);
+    }
+  }
+
+  let toastT=null;
+  function toast(msg){
+    const t=$('toast'); t.innerHTML=msg.replace(/—/,'—'); t.classList.add('show');
+    clearTimeout(toastT); toastT=setTimeout(()=>t.classList.remove('show'),1400);
+  }
+
+  // ---- end of run ----
+  function endRun(banked){
+    const finalStreak = banked ? streak : 0;
+    show('over');
+    $('overKicker').textContent = banked ? 'Banked' : 'Busted';
+    if(banked){
+      $('verdict').className='verdict'; $('verdict').textContent = streak>0 ? 'Nice run.' : 'Zero. Bold.';
+      $('revealLine').textContent = streak>0 ? `You walked away with ${streak} in your pocket.` : 'You banked nothing. A statement.';
+    } else {
+      $('verdict').className='verdict bust'; $('verdict').textContent='Busted.';
+      $('revealLine').textContent = `You flew too close to the sun. It was ${current.year}. (${prettyDate(current.date)}.)`;
+    }
+    $('finalStreak').textContent = finalStreak;
+
+    // banking a score > 0 is the only path to the board
+    const eligible = banked && streak>0;
+    $('bankPrompt').classList.toggle('hide', !eligible);
+    if(eligible){ $('pname').value=''; setTimeout(()=>$('pname').focus(),60); }
+    renderLeaderboard();
+  }
+
+  // ---- leaderboard ----
+  const LB_KEY = "redeye_game_lb";
+  function localBoard(){ try{ return JSON.parse(localStorage.getItem(LB_KEY)||'[]'); }catch(e){ return []; } }
+  function saveLocal(list){ localStorage.setItem(LB_KEY, JSON.stringify(list.slice(0,50))); }
+
+  function sanitizeName(s){
+    return (s||'').replace(/[^A-Za-z0-9 ]/g,'').replace(/\s+/g,' ').trim().slice(0,12);
+  }
+
+  function fmtWhen(iso){ const d=new Date(iso); if(isNaN(d)) return '';
+    return `${MONTHS[d.getMonth()].slice(0,3)} ${d.getDate()}`; }
+
+  async function readBoard(){
+    if(REMOTE){
+      try{
+        const res = await fetch(`${SUPABASE_URL}/rest/v1/scores?select=name,streak,created_at&order=streak.desc,created_at.asc&limit=10`,
+          {headers:{apikey:SUPABASE_ANON, Authorization:`Bearer ${SUPABASE_ANON}`}});
+        if(!res.ok) throw new Error(res.status);
+        return (await res.json()).map(r=>({name:r.name,streak:r.streak,ts:r.created_at}));
+      }catch(e){ console.warn('leaderboard read failed, showing local',e); }
+    }
+    return localBoard().slice().sort((a,b)=> b.streak-a.streak || (a.ts<b.ts?-1:1)).slice(0,10);
+  }
+
+  async function writeBoard(name, streakVal){
+    const s = Math.max(0, Math.min(CAP, streakVal|0));
+    if(REMOTE){
+      const res = await fetch(`${SUPABASE_URL}/rest/v1/scores`,
+        {method:'POST', headers:{apikey:SUPABASE_ANON, Authorization:`Bearer ${SUPABASE_ANON}`,
+          'Content-Type':'application/json', Prefer:'return=minimal'},
+        body: JSON.stringify({name, streak:s})});
+      if(!res.ok) throw new Error('post '+res.status);
+    } else {
+      const list = localBoard(); list.push({name, streak:s, ts:new Date().toISOString()}); saveLocal(list);
+    }
+  }
+
+  let lastYou = null;
+  async function renderLeaderboard(){
+    $('lbMode').textContent = REMOTE ? 'shared' : 'this device';
+    const rows = await readBoard();
+    const body = $('lbBody'); body.innerHTML='';
+    $('lbEmpty').classList.toggle('hide', rows.length>0);
+    rows.forEach((r,i)=>{
+      const tr=document.createElement('tr');
+      const you = lastYou && r.name===lastYou.name && r.streak===lastYou.streak;
+      if(you) tr.className='you';
+      tr.innerHTML = `<td class="r">${i+1}</td><td class="nm">${escapeHtml(r.name)}</td>`+
+                     `<td class="st">${r.streak}</td><td class="dt">${fmtWhen(r.ts)}</td>`;
+      body.appendChild(tr);
+    });
+  }
+  function escapeHtml(s){ return (s||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+
+  // ---- name submit ----
+  let submitting=false;
+  async function submitScore(){
+    if(submitting) return;
+    const name = sanitizeName($('pname').value);
+    if(!name){ $('pname').focus(); $('pname').placeholder='NAME REQUIRED'; return; }
+    submitting=true; const btn=$('submitName'); btn.disabled=true; btn.textContent='…';
+    try{
+      await writeBoard(name, streak);
+      lastYou = {name, streak};
+    }catch(e){ console.warn('submit failed',e); alert('Could not post your score — try again in a moment.'); }
+    submitting=false; btn.disabled=false; btn.textContent='Post';
+    $('bankPrompt').classList.add('hide');
+    renderLeaderboard();
+  }
+
+  // ---- view switching ----
+  function show(which){ ['intro','play','over'].forEach(s=>$(s).classList.toggle('hide', s!==which)); window.scrollTo(0,0); }
+
+  // ---- lightbox ----
+  $('cover').addEventListener('click',()=>{ $('lbImg').src=$('cover').src; $('lightbox').classList.add('show'); });
+  $('lightbox').addEventListener('click',()=>$('lightbox').classList.remove('show'));
+
+  // ---- wire up ----
+  function init(){
+    if(!POOL.length){ $('intro').innerHTML='<p class="lede">Couldn\'t load the archive. Try reloading.</p>'; return; }
+    $('poolnote').textContent = `${CAP.toLocaleString()} covers in play`;
+    $('introBest').textContent = best>0 ? `Your personal best: ${best}` : '';
+    buildYearGrid();
+    $('startBtn').addEventListener('click', newRun);
+    $('againBtn').addEventListener('click', newRun);
+    $('bankBtn').addEventListener('click', ()=>{ if(!locked||true){ endRun(true); } });
+    $('submitName').addEventListener('click', submitScore);
+    $('pname').addEventListener('keydown', e=>{ if(e.key==='Enter') submitScore(); });
+    $('seeLbBtn').addEventListener('click', ()=>{ // peek board from intro (no banking)
+      streak=0; lastYou=null; show('over'); $('overKicker').textContent='Leaderboard';
+      $('verdict').className='verdict'; $('verdict').textContent='The Board';
+      $('revealLine').textContent='Bank a streak to get your name on it.';
+      $('finalStreak').textContent='—'; $('bankPrompt').classList.add('hide'); renderLeaderboard();
+    });
+  }
+  init();
+})();
+</script>
+</body>
+</html>
