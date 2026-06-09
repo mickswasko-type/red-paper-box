@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="robots" content="noindex, nofollow">
 <meta name="description" content="A small guessing game built on a personal newspaper archive.">
-<title>Guess the Year</title>
+<title>Chicago Eras Quiz</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Anton&family=Fraunces:ital,opsz,wght@0,9..144,500;1,9..144,400&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -79,9 +79,15 @@
   .yrbtn.wrong{background:var(--red);border-color:var(--red);color:#fff;}
   .yrbtn[disabled]{cursor:default;}
 
-  .bankrow{margin-top:0.7rem;}
-  .bankrow .btn{background:var(--ink);}
-  .bankrow .btn:hover{filter:none;background:#000;}
+  .bankhud{font-family:'DM Mono',monospace;font-size:0.66rem;letter-spacing:0.1em;text-transform:uppercase;
+     background:var(--ink);color:var(--paper);border:none;border-radius:3px;padding:0.55rem 0.8rem;cursor:pointer;
+     display:flex;align-items:center;gap:0.45rem;white-space:nowrap;-webkit-tap-highlight-color:transparent;transition:background .15s,opacity .15s;}
+  .bankhud b{font-family:'Anton',sans-serif;font-size:1.05rem;letter-spacing:0;color:#fff;}
+  .bankhud:disabled{opacity:0.35;cursor:default;}
+  .bankhud:not(:disabled):hover{background:#000;}
+  .bankhud:not(:disabled){box-shadow:0 0 0 2px rgba(226,35,25,0.25);}
+  .bankhint{font-family:'DM Mono',monospace;font-size:0.56rem;letter-spacing:0.1em;text-transform:uppercase;
+     color:var(--aged);text-align:center;margin-top:0.7rem;}
 
   /* ---- Toast (correct reveal) ---- */
   .toast{position:fixed;left:50%;bottom:calc(1.2rem + env(safe-area-inset-bottom));transform:translateX(-50%) translateY(20px);
@@ -139,8 +145,8 @@
 
   <!-- INTRO -->
   <section id="intro">
-    <div class="kicker">A RedEye Archive Game</div>
-    <h1>Guess the <span class="yr">Year</span></h1>
+    <div class="kicker">A RedEye Archive Quiz</div>
+    <h1>Chicago <span class="yr">Eras</span> Quiz</h1>
     <p class="lede">We show you a RedEye front page. You tell us the year it ran. Get it right, your streak grows. Get it wrong, the run's over. Bank your streak whenever you lose your nerve — that's the only way onto the board.</p>
     <p class="disclaimer">The date's on the page. Don't zoom in on it. We're trusting you. This was a paper for people on the Red Line at 8 a.m. — act accordingly.</p>
     <button class="btn" id="startBtn">Start a run</button>
@@ -155,6 +161,7 @@
         <div class="stat"><div class="l">Streak</div><div class="v red" id="streakV">0</div></div>
         <div class="stat"><div class="l">Best</div><div class="v" id="bestV">0</div></div>
       </div>
+      <button class="bankhud" id="bankBtn" disabled>Bank ▸ <b id="bankStreak">0</b></button>
     </div>
     <div class="stage">
       <img id="cover" alt="RedEye front page" draggable="false">
@@ -162,7 +169,7 @@
     </div>
     <div class="hint">What year did this run? · tap the cover to enlarge</div>
     <div class="grid" id="years"></div>
-    <div class="bankrow"><button class="btn" id="bankBtn">Bank &amp; quit · <span id="bankStreak">0</span></button></div>
+    <p class="bankhint">A wrong guess ends the run. Bank your streak before you push your luck.</p>
   </section>
 
   <!-- END -->
@@ -234,9 +241,14 @@
 
   function shuffle(a){ a=a.slice(); for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];} return a; }
 
+  function updateBank(){
+    $('bankStreak').textContent = streak;
+    $('bankBtn').disabled = streak < 1;   // can't bank a zero
+  }
+
   function newRun(){
     deck = shuffle(POOL); dpos = 0; streak = 0; locked = false;
-    $('streakV').textContent = '0'; $('bestV').textContent = best; $('bankStreak').textContent='0';
+    $('streakV').textContent = '0'; $('bestV').textContent = best; updateBank();
     show('play'); nextCover();
   }
 
@@ -278,7 +290,7 @@
     if(year === answer){
       btn.classList.add('correct');
       streak++;
-      $('streakV').textContent = streak; $('bankStreak').textContent = streak;
+      $('streakV').textContent = streak; updateBank();
       if(streak>best){ best=streak; localStorage.setItem(BEST_KEY,best); $('bestV').textContent=best; }
       toast(`${prettyDate(current.date)} — nice.`);
       setTimeout(nextCover, 850);
@@ -305,7 +317,9 @@
       $('revealLine').textContent = streak>0 ? `You walked away with ${streak} in your pocket.` : 'You banked nothing. A statement.';
     } else {
       $('verdict').className='verdict bust'; $('verdict').textContent='Busted.';
-      $('revealLine').textContent = `You flew too close to the sun. It was ${current.year}. (${prettyDate(current.date)}.)`;
+      $('revealLine').textContent = streak>0
+        ? `You had ${streak} in hand and let it ride. It was ${current.year}. (${prettyDate(current.date)}.) Should've banked.`
+        : `Cold open. It was ${current.year}. (${prettyDate(current.date)}.)`;
     }
     $('finalStreak').textContent = finalStreak;
 
@@ -401,7 +415,7 @@
     buildYearGrid();
     $('startBtn').addEventListener('click', newRun);
     $('againBtn').addEventListener('click', newRun);
-    $('bankBtn').addEventListener('click', ()=>{ if(!locked||true){ endRun(true); } });
+    $('bankBtn').addEventListener('click', ()=>{ if(streak>0) endRun(true); });
     $('submitName').addEventListener('click', submitScore);
     $('pname').addEventListener('keydown', e=>{ if(e.key==='Enter') submitScore(); });
     $('seeLbBtn').addEventListener('click', ()=>{ // peek board from intro (no banking)
