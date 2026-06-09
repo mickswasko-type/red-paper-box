@@ -173,11 +173,11 @@
 <body>
 
 <header>
-  <div class="kicker"><a href="../index.html" style="color:inherit;text-decoration:none">← The RedEye Archive</a> · A Front-Page Story</div>
+  <div class="kicker"><a href="../index.html" style="color:inherit;text-decoration:none">← Chicago News Archive</a> · A Front-Page Story</div>
   <h1>On the Record:<br>One Paper, <span class="rainbow">the Long March</span> to Marriage</h1>
-  <p class="standfirst">Between 2008 and 2016, RedEye Chicago put LGBT life on its cover again and again — Prop 8 and Boystown, civil unions and DADT, Illinois saying <em>I do</em>, the Supreme Court saying <em>everyone</em>, and the morning after Orlando. Scroll the front pages a free daily ran while a country changed its mind.</p>
+  <p class="standfirst">Between 2008 and 2016, the Chicago tabloid put LGBT life on its cover again and again — Prop 8 and Boystown, civil unions and DADT, Illinois saying <em>I do</em>, the Supreme Court saying <em>everyone</em>, and the morning after Orlando. Scroll the front pages a free daily ran while a country changed its mind.</p>
   <div class="meta-row">
-    <div><strong>Source</strong> · RedEye Archive (Internet Archive)</div>
+    <div><strong>Source</strong> · the paper Archive (Internet Archive)</div>
     <div><strong>Span</strong> · Oct 2008 — Nov 2016</div>
     <div><strong>Tap any cover</strong> · opens the full page</div>
   </div>
@@ -193,7 +193,7 @@
 <footer>
   <div class="fkick">— 30 —</div>
   <p class="count">A decade. One front page at a time.</p>
-  <p>This is a single thread pulled from a much larger archive — roughly 800 complete editions of RedEye Chicago, saved before they could disappear. The same approach works for any thread: the Cubs drought, the CTA, a Chicago summer. Pick a topic, the archive remembers.</p>
+  <p>This is a single thread pulled from a much larger archive — roughly 800 complete editions of the Chicago tabloid, saved before they could disappear. The same approach works for any thread: the Cubs drought, the CTA, a Chicago summer. Pick a topic, the archive remembers.</p>
   <p style="font-family:'DM Mono',monospace;font-size:0.72rem;letter-spacing:0.08em;color:var(--aged);text-transform:uppercase;">Covers shown are the ones whose pages led with or flagged LGBT life and the marriage fight. Not every mention — just the ones that made the front.</p>
   <p style="font-style:italic;color:var(--aged);font-size:0.8rem;border-top:1px solid var(--rule);padding-top:1rem;margin-top:0.5rem;max-width:44rem;">A personal, non-commercial preservation project. Not affiliated with, endorsed by, or sponsored by Tribune Publishing. Issues were sourced from the public Internet Archive. If you hold rights to this material and have concerns, please get in touch.</p>
   <div class="legend">
@@ -202,10 +202,10 @@
   </div>
 </footer>
 
-<script src="../redeye-data.js"></script>
+<script src="../archive-data.js"></script>
 <script>
 const covers = [
-  {d:"2008-11-28",disp:"Fri · Nov 28, 2008",id:"1lJGbWnc30P9x6k76fv2eN3_k4_N5lUcZ",h:"Pride & Prejudice",desc:"RedEye takes a look at the state of gay rights — marriage, hate crimes, adoption, discrimination.",major:true,note:"Three weeks after Prop 8 passed in California."},
+  {d:"2008-11-28",disp:"Fri · Nov 28, 2008",id:"1lJGbWnc30P9x6k76fv2eN3_k4_N5lUcZ",h:"Pride & Prejudice",desc:"the paper takes a look at the state of gay rights — marriage, hate crimes, adoption, discrimination.",major:true,note:"Three weeks after Prop 8 passed in California."},
   {d:"2008-12-09",disp:"Tue · Dec 9, 2008",id:"1jvkCJKR9ldtdf4i3Uvg0BsMgOCDumPVW",h:"Calling in Gay?",desc:"Activists draw attention to the same-sex marriage ban by encouraging gays to stay home.",major:false},
   {d:"2009-04-14",disp:"Tue · Apr 14, 2009",id:"1gg8SCeeA0MEwklKWLIbrNDU9BtPs29no",h:"Gay marriage — why not here?",desc:"Iowa says yes. The question lands in Illinois.",major:false},
   {d:"2009-04-23",disp:"Thu · Apr 23, 2009",id:"1o0ug5a1V_R0EmUc1Jf6Q1WJD7Ms0A992",h:"Iowa or Bust",desc:"Some same-sex couples are heading west to tie the knot — the latest on the state of gay unions.",major:true},
@@ -268,7 +268,7 @@ const covers = [
 const tl = document.getElementById('timeline');
 // map date -> full-issue PDF from the main archive index (loaded above)
 const PDF = {};
-((window.REDEYE_DATA&&window.REDEYE_DATA.records)||[]).forEach(r=>{ if(r.pdfFileId) PDF[r.date]=r.pdfFileId; });
+((window.ARCHIVE_DATA&&window.ARCHIVE_DATA.records)||[]).forEach(r=>{ if(r.pdfFileId) PDF[r.date]=r.pdfFileId; });
 let lastYear = null;
 let i = 0;
 covers.forEach(c => {
@@ -291,9 +291,9 @@ covers.forEach(c => {
   a.innerHTML = `
     <div class="card">
       <div class="thumb">
-        <img src="${thumbUrl}" alt="${c.h} — RedEye cover" loading="lazy"
+        <img src="${thumbUrl}" alt="${c.h} — front page" loading="lazy"
              onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
-        <div class="fallback"><span>RED<br>EYE</span></div>
+        <div class="fallback"><span>NO<br>IMAGE</span></div>
       </div>
       <div class="body">
         <div class="date">${c.disp}</div>

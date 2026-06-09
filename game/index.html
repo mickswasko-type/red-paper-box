@@ -139,15 +139,15 @@
 <div class="wrap">
 
   <div class="top">
-    <a class="brand" href="../index.html">← <b>RedEye</b> Archive</a>
+    <a class="brand" href="../index.html">← <b>Chicago News</b> Archive</a>
     <span class="brand" id="poolnote"></span>
   </div>
 
   <!-- INTRO -->
   <section id="intro">
-    <div class="kicker">A RedEye Archive Quiz</div>
+    <div class="kicker">A Chicago News Archive quiz</div>
     <h1>Chicago <span class="yr">Eras</span> Quiz</h1>
-    <p class="lede">We show you a RedEye front page. You tell us the year it ran. Get it right, your streak grows. Get it wrong, the run's over. Bank your streak whenever you lose your nerve — that's the only way onto the board.</p>
+    <p class="lede">We show you a front page. You tell us the year it ran. Get it right, your streak grows. Get it wrong, the run's over. Bank your streak whenever you lose your nerve — that's the only way onto the board.</p>
     <p class="disclaimer">The date's on the page. Don't zoom in on it. We're trusting you. This was a paper for people on the Red Line at 8 a.m. — act accordingly.</p>
     <button class="btn" id="startBtn">Start a run</button>
     <p class="smallnote" id="introBest"></p>
@@ -164,8 +164,8 @@
       <button class="bankhud" id="bankBtn" disabled>Bank ▸ <b id="bankStreak">0</b></button>
     </div>
     <div class="stage">
-      <img id="cover" alt="RedEye front page" draggable="false">
-      <div class="fallback" id="coverFb"><span>RED</span><span>EYE</span></div>
+      <img id="cover" alt="newspaper front page" draggable="false">
+      <div class="fallback" id="coverFb"><span>NO</span><span>IMG</span></div>
     </div>
     <div class="hint">What year did this run? · tap the cover to enlarge</div>
     <div class="grid" id="years"></div>
@@ -205,7 +205,7 @@
 <div class="toast" id="toast"></div>
 <div class="lightbox" id="lightbox"><img id="lbImg" alt="front page, enlarged"></div>
 
-<script src="../redeye-data.js"></script>
+<script src="../archive-data.js"></script>
 <script>
 (function(){
   "use strict";
@@ -224,7 +224,7 @@
     "August","September","October","November","December"];
   const YEARS = [2008,2009,2010,2011,2012,2013,2014,2015,2016];
 
-  const DATA = (window.REDEYE_DATA && window.REDEYE_DATA.records) || [];
+  const DATA = (window.ARCHIVE_DATA && window.ARCHIVE_DATA.records) || [];
   const POOL = DATA.filter(r => r.cover && r.gid);   // playable covers, opaque ids
   const CAP = POOL.length;                            // streak can't exceed archive size
 
@@ -233,7 +233,7 @@
   const prettyDate = iso => { const [y,m,d]=iso.split('-'); return `${MONTHS[+m-1]} ${+d}, ${y}`; };
 
   // ---- persistent personal best ----
-  const BEST_KEY = "redeye_game_best";
+  const BEST_KEY = "cna_game_best";
   let best = +(localStorage.getItem(BEST_KEY) || 0);
 
   // ---- run state ----
@@ -331,7 +331,7 @@
   }
 
   // ---- leaderboard ----
-  const LB_KEY = "redeye_game_lb";
+  const LB_KEY = "cna_game_lb";
   function localBoard(){ try{ return JSON.parse(localStorage.getItem(LB_KEY)||'[]'); }catch(e){ return []; } }
   function saveLocal(list){ localStorage.setItem(LB_KEY, JSON.stringify(list.slice(0,50))); }
 

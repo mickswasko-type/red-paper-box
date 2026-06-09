@@ -1,4 +1,4 @@
-# Daily Front Pages — a personal news archive (2008–2016)
+# Chicago News Archive
 
 A static, searchable archive of daily newspaper front pages, built as a personal,
 non-commercial preservation project. Cover images are hosted here; full issues open
@@ -7,7 +7,7 @@ from Google Drive.
 - `index.html` — the searchable archive (search, year/month/day filters, lazy-loaded grid)
 - `covers/` — optimized cover images, named `YYYY-MM-DD.jpg`
 - `collections/` — featured curated threads
-- `redeye-data.js` — the dataset (one record per date)
+- `archive-data.js` — the dataset (one record per date)
 
 Served via GitHub Pages. Not affiliated with, endorsed by, or sponsored by any
 publisher. Material was sourced from the public Internet Archive.
@@ -24,7 +24,7 @@ archive page. `noindex, nofollow`.
 playable cover is copied to `game/img/<gid>.jpg`, where `<gid>` is a date-free hash
 (`build_game.py`). The copies are byte-identical to `covers/`, so Git stores one blob
 per image — they cost ~nothing extra to push. The real date lives only in
-`redeye-data.js` (reused, not duplicated) and is shown **only** after you guess.
+`archive-data.js` (reused, not duplicated) and is shown **only** after you guess.
 
 Regenerate after adding covers: `python3 build_pages.py && python3 build_game.py`
 (run from the `redeye-archive` tools dir), then commit/push.
